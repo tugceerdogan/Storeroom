@@ -1,7 +1,6 @@
-package com.example.storeroom.login
+package com.example.storeroom.ui.login
 
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -18,17 +17,18 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.storeroom.R
 
 val whiteTextStyle = TextStyle(color = Color.White)
 val customBoldFont = FontFamily(Font(R.font.majallabold))
-val customFont = FontFamily(Font(R.font.majallabold))
 val termAndPolicyTextColor = Color(0xFF6B5E5E)
 val termAndPolicyClickableTextColor = Color(0xFF0386D0)
 val unselectTabColor = Color(0xFFA6A6A6)
@@ -36,7 +36,7 @@ val rememberPasswordTextColor = Color(0xFF6B5E5E)
 val editTextBackgroundColor = Color(0xFFF9F9F9)
 
 @Composable
-fun LoginScreen() {
+fun LoginAndRegisterScreen() {
     Column(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.Center,
@@ -162,15 +162,107 @@ fun LoginOrRegisterTabLayout() {
     }
 }
 
-@Composable
-fun UserNameTextField() {
-    var name by remember { mutableStateOf("") }
 
+@Composable
+fun LoginSuccesfulSnackbar(
+    snackbarVisibleState: MutableState<Boolean>,
+    snackbarText: String
+) {
+    if (snackbarVisibleState.value) {
+        Snackbar(
+            action = {
+                TextButton(onClick = { snackbarVisibleState.value = false }) {
+                    Text(text = "OK", style = whiteTextStyle)
+                }
+            },
+            modifier = Modifier.padding(top = 50.dp)
+        ) {
+            Text(text = snackbarText)
+        }
+    }
+}
+
+@Composable
+fun LoginTabScreen(loginAndRegisterViewModel: LoginAndRegisterViewModel = viewModel()) {
+    val user by loginAndRegisterViewModel.user.collectAsState()
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+        val userEmail = remember { mutableStateOf(TextFieldValue()) }
+        val userPassword = remember { mutableStateOf(TextFieldValue()) }
+        var snackbarVisibleState by remember { mutableStateOf(false) }
+
+        UserInputField(userEmail, "Email Address")
+        Spacer(modifier = Modifier.height(10.dp))
+
+        UserInputField(userPassword, "Password")
+        Spacer(modifier = Modifier.height(10.dp))
+
+        PasswordRow()
+        Spacer(modifier = Modifier.height(60.dp))
+
+        UserButton(onClick = {
+            val userEmailText = userEmail.value.text
+            val userPasswordText = userPassword.value.text
+            println("Email Address: $userEmailText")
+            println("Password : $userPasswordText")
+            snackbarVisibleState = true
+        }, text = "Login")
+    }
+}
+
+@Composable
+fun RegisterTabScreen() {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+        val userName = remember { mutableStateOf(TextFieldValue()) }
+        val userEmail = remember { mutableStateOf(TextFieldValue()) }
+        val userPassword = remember { mutableStateOf(TextFieldValue()) }
+        var snackbarVisibleState by remember { mutableStateOf(false) }
+
+
+        UserInputField(userName, "Name")
+        Spacer(modifier = Modifier.height(10.dp))
+
+        UserInputField(userEmail, "Email Address")
+        Spacer(modifier = Modifier.height(10.dp))
+
+        UserInputField(userPassword, "Password")
+        Spacer(modifier = Modifier.height(10.dp))
+
+        PasswordRow()
+        Spacer(modifier = Modifier.height(60.dp))
+
+        UserButton(onClick = {
+            val userNameText = userName.value.text
+            val userEmailText = userEmail.value.text
+            val userPasswordText = userPassword.value.text
+            println("User Name: $userNameText")
+            println("Email Address: $userEmailText")
+            println("Password : $userPasswordText")
+            snackbarVisibleState = true
+        }, text = "Register")
+    }
+}
+
+@Composable
+fun UserInputField(
+    value: MutableState<TextFieldValue>,
+    label: String,
+    modifier: Modifier = Modifier
+) {
     OutlinedTextField(
-        value = name,
-        onValueChange = { name = it },
-        label = { Text(text = "Name", color = Color(0xFF928A9C)) },
-        modifier = Modifier
+        value = value.value,
+        onValueChange = { newValue -> value.value = newValue },
+        label = { Text(text = label, color = Color(0xFF928A9C)) },
+        modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 32.dp),
         colors = TextFieldDefaults.outlinedTextFieldColors(
@@ -184,45 +276,27 @@ fun UserNameTextField() {
 }
 
 @Composable
-fun UserEmailTextField() {
-    var userEmail by remember { mutableStateOf("") }
-
-    OutlinedTextField(
-        value = userEmail,
-        onValueChange = { userEmail = it },
-        label = { Text(text = "Email Address", color = Color(0xFF928A9C)) },
+fun UserButton(onClick: () -> Unit, text: String) {
+    Button(
+        onClick = onClick,
+        colors = ButtonDefaults.buttonColors(backgroundColor = termAndPolicyClickableTextColor),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 32.dp),
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            backgroundColor = editTextBackgroundColor,
-            textColor = Color(0xFFC4C4C4),
-            focusedBorderColor = Color(0xFF928A9C),
-            unfocusedBorderColor = Color(0xFFCCC9C9)
-        ),
+            .padding(horizontal = 32.dp)
+            .height(60.dp),
         shape = RoundedCornerShape(16.dp),
-    )
-}
-
-@Composable
-fun UserPasswordTextField() {
-    var userPassword by remember { mutableStateOf("") }
-
-    OutlinedTextField(
-        value = userPassword,
-        onValueChange = { userPassword = it },
-        label = { Text(text = "Password",color = Color(0xFF928A9C)) },
+    ) {
+        Text(text = text, style = whiteTextStyle)
+    }
+    Text(
+        text = "or connect with",
+        color = rememberPasswordTextColor,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 32.dp),
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            backgroundColor = editTextBackgroundColor,
-            textColor = Color(0xFFC4C4C4),
-            focusedBorderColor = Color(0xFF928A9C),
-            unfocusedBorderColor = Color(0xFFCCC9C9)
-        ),
-        shape = RoundedCornerShape(16.dp),
+            .padding(25.dp),
+        textAlign = TextAlign.Center
     )
+    SocialMediaImages()
 }
 
 @Composable
@@ -248,56 +322,8 @@ fun PasswordRow() {
 
 
 @Composable
-fun UserLoginButton(onClick: () -> Unit) {
-    Button(
-        onClick = onClick,
-        colors = ButtonDefaults.buttonColors(backgroundColor = termAndPolicyClickableTextColor),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 32.dp)
-            .height(60.dp),
-        shape = RoundedCornerShape(16.dp),
-    ) {
-        Text(text = "Login", style = whiteTextStyle)
-    }
-    OrConnectWithText()
-    SocialMediaImages()
-}
-
-@Composable
-fun UserRegisterButton(onClick: () -> Unit) {
-    OutlinedButton(
-        onClick = onClick,
-        colors = ButtonDefaults.buttonColors(backgroundColor = Color.White),
-        border = BorderStroke(1.dp, termAndPolicyClickableTextColor),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 32.dp)
-            .height(60.dp),
-        shape = RoundedCornerShape(16.dp),
-    ) {
-        Text(text = "Register", style = whiteTextStyle, color = termAndPolicyClickableTextColor)
-    }
-
-    OrConnectWithText()
-    SocialMediaImages()
-}
-
-@Composable
-fun OrConnectWithText() {
-    Text(
-        text = "or connect with",
-        color = rememberPasswordTextColor,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(25.dp),
-        textAlign = TextAlign.Center
-    )
-}
-
-@Composable
-fun SocialMediaImages(){
-    val facebookIcon= painterResource(R.drawable.facebook_icon)
+fun SocialMediaImages() {
+    val facebookIcon = painterResource(R.drawable.facebook_icon)
     val googleIcon = painterResource(R.drawable.google_icon)
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -319,67 +345,8 @@ fun SocialMediaImages(){
 }
 
 
-@Composable
-fun LoginSuccesfulSnackbar(
-    snackbarVisibleState: MutableState<Boolean>,
-    snackbarText: String
-) {
-    if (snackbarVisibleState.value) {
-        Snackbar(
-            action = {
-                TextButton(onClick = { snackbarVisibleState.value = false }) {
-                    Text(text = "OK", style = whiteTextStyle)
-                }
-            },
-            modifier = Modifier.padding(top = 50.dp)
-        ) {
-            Text(text = snackbarText)
-        }
-    }
-}
-
-@Composable
-fun LoginTabScreen() {
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        val snackbarVisibleState = remember { mutableStateOf(false) }
-        UserEmailTextField()
-        Spacer(modifier = Modifier.height(10.dp))
-        UserPasswordTextField()
-        Spacer(modifier = Modifier.height(10.dp))
-        PasswordRow()
-        Spacer(modifier = Modifier.height(60.dp))
-        UserLoginButton(onClick = {
-            snackbarVisibleState.value = true
-        })
-    }
-}
-
-@Composable
-fun RegisterTabScreen() {
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        val snackbarVisibleState = remember { mutableStateOf(false) }
-        UserNameTextField()
-        Spacer(modifier = Modifier.height(10.dp))
-        UserEmailTextField()
-        Spacer(modifier = Modifier.height(10.dp))
-        UserPasswordTextField()
-        Spacer(modifier = Modifier.height(80.dp))
-        UserRegisterButton(onClick = {
-            snackbarVisibleState.value = true
-        })
-    }
-}
-
 @Preview
 @Composable
-fun PreviewLoginScreen() {
-    LoginScreen()
+fun PreviewLoginAndRegisterScreen() {
+    LoginAndRegisterScreen()
 }
