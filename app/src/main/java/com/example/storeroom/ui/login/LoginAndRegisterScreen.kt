@@ -183,8 +183,7 @@ fun LoginSuccesfulSnackbar(
 }
 
 @Composable
-fun LoginTabScreen(loginAndRegisterViewModel: LoginAndRegisterViewModel = viewModel()) {
-    val user by loginAndRegisterViewModel.user.collectAsState()
+fun LoginTabScreen() {
     Column(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.Center,
@@ -195,10 +194,10 @@ fun LoginTabScreen(loginAndRegisterViewModel: LoginAndRegisterViewModel = viewMo
         val userPassword = remember { mutableStateOf(TextFieldValue()) }
         var snackbarVisibleState by remember { mutableStateOf(false) }
 
-        UserInputField(userEmail, "Email Address")
+        //UserInputField(userEmail.value.text, "Email Address")
         Spacer(modifier = Modifier.height(10.dp))
 
-        UserInputField(userPassword, "Password")
+        //UserInputField(userPassword.value.text, "Password")
         Spacer(modifier = Modifier.height(10.dp))
 
         PasswordRow()
@@ -215,52 +214,71 @@ fun LoginTabScreen(loginAndRegisterViewModel: LoginAndRegisterViewModel = viewMo
 }
 
 @Composable
-fun RegisterTabScreen() {
+fun RegisterTabScreen(registerViewModel: RegisterViewModel = viewModel()) {
     Column(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        val userName = remember { mutableStateOf(TextFieldValue()) }
-        val userEmail = remember { mutableStateOf(TextFieldValue()) }
-        val userPassword = remember { mutableStateOf(TextFieldValue()) }
+        val user by registerViewModel.userRegister.collectAsState()
         var snackbarVisibleState by remember { mutableStateOf(false) }
 
 
-        UserInputField(userName, "Name")
+        UserInputField(
+            value = user.userName,
+            label = "Name",
+            onValueChange = registerViewModel::updateUserName
+        )
         Spacer(modifier = Modifier.height(10.dp))
 
-        UserInputField(userEmail, "Email Address")
+        UserInputField(
+            value = user.userEmail,
+            label = "Email Address",
+            onValueChange = registerViewModel::updateUserEmail
+        )
         Spacer(modifier = Modifier.height(10.dp))
 
-        UserInputField(userPassword, "Password")
+        UserInputField(
+            value = user.userPassword,
+            label = "Password",
+            onValueChange = registerViewModel::updateUserPassword
+        )
         Spacer(modifier = Modifier.height(10.dp))
 
         PasswordRow()
         Spacer(modifier = Modifier.height(60.dp))
 
-        UserButton(onClick = {
-            val userNameText = userName.value.text
-            val userEmailText = userEmail.value.text
-            val userPasswordText = userPassword.value.text
-            println("User Name: $userNameText")
-            println("Email Address: $userEmailText")
-            println("Password : $userPasswordText")
-            snackbarVisibleState = true
-        }, text = "Register")
+        UserButton(
+            onClick = {
+                println("User Name:  ${user.userName}")
+                println("Email Address: ${user.userEmail}")
+                println("Password : ${user.userPassword}")
+                snackbarVisibleState = true
+                registerViewModel.registerUser()
+            },
+            text = "Register"
+        )
     }
 }
 
 @Composable
 fun UserInputField(
-    value: MutableState<TextFieldValue>,
+    value: String,
     label: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onValueChange: (String) -> Unit
 ) {
+
+    val textFieldValue = remember { mutableStateOf(TextFieldValue()) }
+    textFieldValue.value = TextFieldValue(value)
+
     OutlinedTextField(
-        value = value.value,
-        onValueChange = { newValue -> value.value = newValue },
+        value = textFieldValue.value,
+        onValueChange = { newValue ->
+            textFieldValue.value = newValue
+            onValueChange(newValue.text)
+        },
         label = { Text(text = label, color = Color(0xFF928A9C)) },
         modifier = modifier
             .fillMaxWidth()

@@ -1,6 +1,6 @@
 package com.example.storeroom.domain
 
-data class User(
+data class UserRegister(
     val userName: String = "",
     val userEmail: String = "",
     val userPassword: String = ""

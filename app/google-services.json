@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "708535690850",
+    "project_id": "storeroom-5bff4",
+    "storage_bucket": "storeroom-5bff4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:708535690850:android:b68da834d4d3a212e2d33b",
+        "android_client_info": {
+          "package_name": "com.example.storeroom"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "708535690850-vgdqvc911ft9tv4spj6b128h0oq5t70c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBv4s771CXfv20rSFte3Tt2myoCllP3RUI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "708535690850-vgdqvc911ft9tv4spj6b128h0oq5t70c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
