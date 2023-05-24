@@ -20,8 +20,12 @@ class RegisterViewModel @Inject constructor(
 
 
     fun registerUser(){
-        viewModelScope.launch {
-            userRepository.registerUser(_userRegister.value)
+        if(isEmailValid(_userRegister.value.userEmail)){
+            viewModelScope.launch {
+                userRepository.registerUser(_userRegister.value)
+            }
+        }else{
+            println("Email is not valid")
         }
     }
 
@@ -35,5 +39,9 @@ class RegisterViewModel @Inject constructor(
 
     fun updateUserPassword(newUserPassword:String){
         _userRegister.value = _userRegister.value.copy(userPassword = newUserPassword)
+    }
+
+    private fun isEmailValid(email: String): Boolean {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 }

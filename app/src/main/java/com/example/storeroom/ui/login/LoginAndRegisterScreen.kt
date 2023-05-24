@@ -222,27 +222,38 @@ fun RegisterTabScreen(registerViewModel: RegisterViewModel = viewModel()) {
     ) {
 
         val user by registerViewModel.userRegister.collectAsState()
+        val userNameField = remember { mutableStateOf(TextFieldValue(user.userName)) }
+        val userEmailField = remember { mutableStateOf(TextFieldValue(user.userEmail)) }
+        val userPasswordField = remember { mutableStateOf(TextFieldValue(user.userPassword)) }
         var snackbarVisibleState by remember { mutableStateOf(false) }
 
-
         UserInputField(
-            value = user.userName,
+            value = userNameField.value,
             label = "Name",
-            onValueChange = registerViewModel::updateUserName
+            onValueChange = { newValue ->
+                userNameField.value = newValue
+                registerViewModel.updateUserName(newValue.text)
+            }
         )
         Spacer(modifier = Modifier.height(10.dp))
 
         UserInputField(
-            value = user.userEmail,
+            value = userEmailField.value,
             label = "Email Address",
-            onValueChange = registerViewModel::updateUserEmail
+            onValueChange = { newValue ->
+                userEmailField.value = newValue
+                registerViewModel.updateUserEmail(newValue.text)
+            }
         )
         Spacer(modifier = Modifier.height(10.dp))
 
         UserInputField(
-            value = user.userPassword,
+            value = userPasswordField.value,
             label = "Password",
-            onValueChange = registerViewModel::updateUserPassword
+            onValueChange = { newValue ->
+                userPasswordField.value = newValue
+                registerViewModel.updateUserPassword(newValue.text)
+            }
         )
         Spacer(modifier = Modifier.height(10.dp))
 
@@ -264,28 +275,22 @@ fun RegisterTabScreen(registerViewModel: RegisterViewModel = viewModel()) {
 
 @Composable
 fun UserInputField(
-    value: String,
+    value: TextFieldValue,
     label: String,
     modifier: Modifier = Modifier,
-    onValueChange: (String) -> Unit
+    onValueChange: (TextFieldValue) -> Unit
 ) {
 
-    val textFieldValue = remember { mutableStateOf(TextFieldValue()) }
-    textFieldValue.value = TextFieldValue(value)
-
     OutlinedTextField(
-        value = textFieldValue.value,
-        onValueChange = { newValue ->
-            textFieldValue.value = newValue
-            onValueChange(newValue.text)
-        },
+        value = value,
+        onValueChange = onValueChange,
         label = { Text(text = label, color = Color(0xFF928A9C)) },
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 32.dp),
         colors = TextFieldDefaults.outlinedTextFieldColors(
             backgroundColor = editTextBackgroundColor,
-            textColor = Color(0xFFC4C4C4),
+            textColor = Color.Black,
             focusedBorderColor = Color(0xFF928A9C),
             unfocusedBorderColor = Color(0xFFCCC9C9)
         ),
