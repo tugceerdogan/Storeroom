@@ -1,4 +1,4 @@
-package com.example.storeroom.domain
+package com.example.storeroom.data.login
 
 data class UserLogin(
     val userEmail: String = "",

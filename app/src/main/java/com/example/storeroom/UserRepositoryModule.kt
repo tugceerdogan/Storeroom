@@ -1,7 +1,9 @@
 package com.example.storeroom
 
-import com.example.storeroom.repository.FirebaseUserRepository
-import com.example.storeroom.repository.UserRepository
+import com.example.storeroom.domain.login.LoginRepository
+import com.example.storeroom.domain.login.LoginRepositoryImpl
+import com.example.storeroom.domain.register.RegisterRepository
+import com.example.storeroom.domain.register.RegisterRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -12,5 +14,8 @@ import dagger.hilt.components.SingletonComponent
 abstract class UserRepositoryModule {
 
     @Binds
-    abstract fun bindUserRepository(impl:FirebaseUserRepository):UserRepository
+    abstract fun bindLoginRepository(impl: LoginRepositoryImpl): LoginRepository
+
+    @Binds
+    abstract fun bindRegisterRepository(impl: RegisterRepositoryImpl): RegisterRepository
 }

@@ -26,6 +26,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.storeroom.R
+import com.example.storeroom.ui.register.RegisterViewModel
+import com.example.storeroom.util.UIState
 
 val whiteTextStyle = TextStyle(color = Color.White)
 val customBoldFont = FontFamily(Font(R.font.majallabold))
@@ -183,49 +185,90 @@ fun LoginSuccesfulSnackbar(
 }
 
 @Composable
-fun LoginTabScreen() {
+fun LoginTabScreen(loginViewModel: LoginViewModel = viewModel()) {
+
+    val user by loginViewModel.userLogin.collectAsState()
+    val userEmailField = remember { mutableStateOf(TextFieldValue(user.userEmail)) }
+    val userPasswordField = remember { mutableStateOf(TextFieldValue(user.userPassword)) }
+    var snackbarVisibleState by remember { mutableStateOf(false) }
+
     Column(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        val userEmail = remember { mutableStateOf(TextFieldValue()) }
-        val userPassword = remember { mutableStateOf(TextFieldValue()) }
-        var snackbarVisibleState by remember { mutableStateOf(false) }
+        UserInputField(
+            value = userEmailField.value,
+            label = "Email Address",
+            onValueChange = { newValue ->
+                userEmailField.value = newValue
+                loginViewModel.updateUserEmail(newValue.text)
+            }
+        )
 
-        //UserInputField(userEmail.value.text, "Email Address")
         Spacer(modifier = Modifier.height(10.dp))
 
-        //UserInputField(userPassword.value.text, "Password")
+        UserInputField(
+            value = userPasswordField.value,
+            label = "Password",
+            onValueChange = { newValue ->
+                userPasswordField.value = newValue
+                loginViewModel.updateUserPassword(newValue.text)
+            }
+        )
         Spacer(modifier = Modifier.height(10.dp))
 
         PasswordRow()
         Spacer(modifier = Modifier.height(60.dp))
 
-        UserButton(onClick = {
-            val userEmailText = userEmail.value.text
-            val userPasswordText = userPassword.value.text
-            println("Email Address: $userEmailText")
-            println("Password : $userPasswordText")
-            snackbarVisibleState = true
-        }, text = "Login")
+        UserButton(
+            onClick = {
+                println("Email Address: ${user.userEmail}")
+                println("Password : ${user.userPassword}")
+                snackbarVisibleState = true
+                loginViewModel.loginUser()
+            },
+            text = "Login"
+        )
     }
 }
 
 @Composable
 fun RegisterTabScreen(registerViewModel: RegisterViewModel = viewModel()) {
+
+    val user by registerViewModel.userRegister.collectAsState()
+
+    val userNameField = remember { mutableStateOf(TextFieldValue(user.userName)) }
+    val userEmailField = remember { mutableStateOf(TextFieldValue(user.userEmail)) }
+    val userPasswordField = remember { mutableStateOf(TextFieldValue(user.userPassword)) }
+
+    var snackbarVisibleState by remember { mutableStateOf(false) }
+
+    val uiState by registerViewModel.uiState.collectAsState()
+
+    when (uiState) {
+        is UIState.Loading -> {
+
+        }
+        is UIState.Success -> {
+
+        }
+        is UIState.Error -> {
+            val scaffoldState = rememberScaffoldState()
+            LaunchedEffect(key1 = true) {
+                scaffoldState.snackbarHostState.showSnackbar(
+                    (uiState as UIState.Error).exception.message ?: "An error occurred"
+                )
+            }
+        }
+    }
+
     Column(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
-        val user by registerViewModel.userRegister.collectAsState()
-        val userNameField = remember { mutableStateOf(TextFieldValue(user.userName)) }
-        val userEmailField = remember { mutableStateOf(TextFieldValue(user.userEmail)) }
-        val userPasswordField = remember { mutableStateOf(TextFieldValue(user.userPassword)) }
-        var snackbarVisibleState by remember { mutableStateOf(false) }
 
         UserInputField(
             value = userNameField.value,
@@ -255,10 +298,7 @@ fun RegisterTabScreen(registerViewModel: RegisterViewModel = viewModel()) {
                 registerViewModel.updateUserPassword(newValue.text)
             }
         )
-        Spacer(modifier = Modifier.height(10.dp))
-
-        PasswordRow()
-        Spacer(modifier = Modifier.height(60.dp))
+        Spacer(modifier = Modifier.height(90.dp))
 
         UserButton(
             onClick = {
