@@ -5,8 +5,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.storeroom.ui.HomeScreen
+import com.example.storeroom.ui.home.HomeScreen
 import com.example.storeroom.ui.LoginAndRegisterScreen
+import com.example.storeroom.ui.categorydetail.CategoryDetailScreen
 import com.example.storeroom.ui.login.LoginViewModel
 import com.example.storeroom.ui.register.RegisterViewModel
 
@@ -25,6 +26,10 @@ fun ApplicationNavGraph() {
         }
         composable(Screen.Home.route) {
             HomeScreen(navHostController = navController)
+        }
+
+        composable(Screen.CategoryDetail.route) {
+            CategoryDetailScreen(navHostController = navController)
         }
     }
 }
