@@ -91,4 +91,7 @@ dependencies {
 
     //Nav
     implementation "androidx.navigation:navigation-compose:2.7.0-beta01"
+
+    implementation 'com.google.accompanist:accompanist-flowlayout:0.16.1'
+
 }
