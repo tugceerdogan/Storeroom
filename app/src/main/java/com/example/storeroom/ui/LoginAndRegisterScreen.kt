@@ -13,10 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
@@ -29,15 +26,14 @@ import com.example.storeroom.R
 import com.example.storeroom.nav.Screen
 import com.example.storeroom.ui.login.LoginViewModel
 import com.example.storeroom.ui.register.RegisterViewModel
+import com.example.storeroom.util.StoreroomTheme.customBoldFont
+import com.example.storeroom.util.StoreroomTheme.editTextBackgroundColor
+import com.example.storeroom.util.StoreroomTheme.rememberPasswordTextColor
+import com.example.storeroom.util.StoreroomTheme.termAndPolicyClickableTextColor
+import com.example.storeroom.util.StoreroomTheme.termAndPolicyTextColor
+import com.example.storeroom.util.StoreroomTheme.unselectTabColor
+import com.example.storeroom.util.StoreroomTheme.whiteTextStyle
 import com.example.storeroom.util.UIState
-
-val whiteTextStyle = TextStyle(color = Color.White)
-val customBoldFont = FontFamily(Font(R.font.majallabold))
-val termAndPolicyTextColor = Color(0xFF6B5E5E)
-val termAndPolicyClickableTextColor = Color(0xFF0386D0)
-val unselectTabColor = Color(0xFFA6A6A6)
-val rememberPasswordTextColor = Color(0xFF6B5E5E)
-val editTextBackgroundColor = Color(0xFFF9F9F9)
 
 @Composable
 fun LoginAndRegisterScreen(
@@ -45,7 +41,6 @@ fun LoginAndRegisterScreen(
     registerViewModel: RegisterViewModel,
     navHostController: NavHostController
 ) {
-
     Column(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.Center,
@@ -175,7 +170,6 @@ fun LoginOrRegisterTabLayout(
     }
 }
 
-
 @Composable
 fun LoginSuccesfulSnackbar(
     snackbarVisibleState: MutableState<Boolean>,
@@ -200,7 +194,6 @@ fun LoginTabScreen(
     loginViewModel: LoginViewModel,
     navHostController: NavHostController,
 ) {
-
     val user by loginViewModel.userLogin.collectAsState()
     val userEmailField = remember { mutableStateOf(TextFieldValue(user.userEmail)) }
     val userPasswordField = remember { mutableStateOf(TextFieldValue(user.userPassword)) }
@@ -259,6 +252,7 @@ fun LoginTabScreen(
         Spacer(modifier = Modifier.height(10.dp))
 
         PasswordRow()
+
         Spacer(modifier = Modifier.height(60.dp))
 
         UserButton(
@@ -291,7 +285,6 @@ fun RegisterTabScreen(
 
     when (uiState) {
         is UIState.Loading -> {
-
         }
         is UIState.Success -> {
             navHostController.navigate(Screen.Login.route)
@@ -311,7 +304,6 @@ fun RegisterTabScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
         UserInputField(
             value = userNameField.value,
             label = "Name",
@@ -320,6 +312,7 @@ fun RegisterTabScreen(
                 registerViewModel.updateUserName(newValue.text)
             }
         )
+
         Spacer(modifier = Modifier.height(10.dp))
 
         UserInputField(
@@ -330,6 +323,7 @@ fun RegisterTabScreen(
                 registerViewModel.updateUserEmail(newValue.text)
             }
         )
+
         Spacer(modifier = Modifier.height(10.dp))
 
         UserInputField(
@@ -340,6 +334,7 @@ fun RegisterTabScreen(
                 registerViewModel.updateUserPassword(newValue.text)
             }
         )
+
         Spacer(modifier = Modifier.height(90.dp))
 
         UserButton(
@@ -448,7 +443,6 @@ fun SocialMediaImages() {
         )
     }
 }
-
 
 @Preview
 @Composable
