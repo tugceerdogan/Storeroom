@@ -1,4 +1,4 @@
-package com.example.storeroom.ui.login
+package com.example.storeroom.ui
 
 
 import androidx.compose.foundation.Image
@@ -24,8 +24,10 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import com.example.storeroom.R
+import com.example.storeroom.nav.Screen
+import com.example.storeroom.ui.login.LoginViewModel
 import com.example.storeroom.ui.register.RegisterViewModel
 import com.example.storeroom.util.UIState
 
@@ -38,7 +40,12 @@ val rememberPasswordTextColor = Color(0xFF6B5E5E)
 val editTextBackgroundColor = Color(0xFFF9F9F9)
 
 @Composable
-fun LoginAndRegisterScreen() {
+fun LoginAndRegisterScreen(
+    loginViewModel: LoginViewModel,
+    registerViewModel: RegisterViewModel,
+    navHostController: NavHostController
+) {
+
     Column(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.Center,
@@ -52,7 +59,7 @@ fun LoginAndRegisterScreen() {
             clickableText = "Term and privacy policy"
         )
         Spacer(modifier = Modifier.height(45.dp))
-        LoginOrRegisterTabLayout()
+        LoginOrRegisterTabLayout(loginViewModel, registerViewModel, navHostController)
         LoginSuccesfulSnackbar(
             snackbarVisibleState,
             "Login Successful"
@@ -122,7 +129,11 @@ fun TermAndPolicyText(
 }
 
 @Composable
-fun LoginOrRegisterTabLayout() {
+fun LoginOrRegisterTabLayout(
+    loginViewModel: LoginViewModel,
+    registerViewModel: RegisterViewModel,
+    navHostController: NavHostController
+) {
     var selectedTabIndex by remember { mutableStateOf(0) }
 
     Column(Modifier.fillMaxSize()) {
@@ -156,9 +167,9 @@ fun LoginOrRegisterTabLayout() {
 
         Box(modifier = Modifier.fillMaxSize()) {
             if (selectedTabIndex == 0) {
-                LoginTabScreen()
+                LoginTabScreen(loginViewModel, navHostController)
             } else {
-                RegisterTabScreen()
+                RegisterTabScreen(registerViewModel, navHostController)
             }
         }
     }
@@ -185,12 +196,40 @@ fun LoginSuccesfulSnackbar(
 }
 
 @Composable
-fun LoginTabScreen(loginViewModel: LoginViewModel = viewModel()) {
+fun LoginTabScreen(
+    loginViewModel: LoginViewModel,
+    navHostController: NavHostController,
+) {
 
     val user by loginViewModel.userLogin.collectAsState()
     val userEmailField = remember { mutableStateOf(TextFieldValue(user.userEmail)) }
     val userPasswordField = remember { mutableStateOf(TextFieldValue(user.userPassword)) }
     var snackbarVisibleState by remember { mutableStateOf(false) }
+
+    val uiState by loginViewModel.uiState.collectAsState()
+
+    when (uiState) {
+        is UIState.Loading -> {
+        }
+        is UIState.Success -> {
+            if ((uiState as UIState.Success).data) {
+                navHostController.navigate(Screen.Home.route)
+            } else {
+                val scaffoldState = rememberScaffoldState()
+                LaunchedEffect(key1 = true) {
+                    scaffoldState.snackbarHostState.showSnackbar("Login failed")
+                }
+            }
+        }
+        is UIState.Error -> {
+            val scaffoldState = rememberScaffoldState()
+            LaunchedEffect(key1 = true) {
+                scaffoldState.snackbarHostState.showSnackbar(
+                    (uiState as UIState.Error).exception.message ?: "An error occurred"
+                )
+            }
+        }
+    }
 
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -223,19 +262,22 @@ fun LoginTabScreen(loginViewModel: LoginViewModel = viewModel()) {
         Spacer(modifier = Modifier.height(60.dp))
 
         UserButton(
+            text = "Login",
             onClick = {
                 println("Email Address: ${user.userEmail}")
                 println("Password : ${user.userPassword}")
                 snackbarVisibleState = true
                 loginViewModel.loginUser()
-            },
-            text = "Login"
+            }
         )
     }
 }
 
 @Composable
-fun RegisterTabScreen(registerViewModel: RegisterViewModel = viewModel()) {
+fun RegisterTabScreen(
+    registerViewModel: RegisterViewModel,
+    navHostController: NavHostController
+) {
 
     val user by registerViewModel.userRegister.collectAsState()
 
@@ -252,7 +294,7 @@ fun RegisterTabScreen(registerViewModel: RegisterViewModel = viewModel()) {
 
         }
         is UIState.Success -> {
-
+            navHostController.navigate(Screen.Login.route)
         }
         is UIState.Error -> {
             val scaffoldState = rememberScaffoldState()
@@ -411,5 +453,4 @@ fun SocialMediaImages() {
 @Preview
 @Composable
 fun PreviewLoginAndRegisterScreen() {
-    LoginAndRegisterScreen()
 }
