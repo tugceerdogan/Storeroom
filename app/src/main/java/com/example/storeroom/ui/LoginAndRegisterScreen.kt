@@ -8,6 +8,7 @@ import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.*
 import androidx.compose.material.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,6 +27,7 @@ import com.example.storeroom.R
 import com.example.storeroom.nav.Screen
 import com.example.storeroom.ui.login.LoginViewModel
 import com.example.storeroom.ui.register.RegisterViewModel
+import com.example.storeroom.util.GoogleSignInButton
 import com.example.storeroom.util.StoreroomTheme.customBoldFont
 import com.example.storeroom.util.StoreroomTheme.editTextBackgroundColor
 import com.example.storeroom.util.StoreroomTheme.rememberPasswordTextColor
@@ -195,6 +197,7 @@ fun LoginTabScreen(
     navHostController: NavHostController,
 ) {
     val user by loginViewModel.userLogin.collectAsState()
+    val googleUser by loginViewModel.user.observeAsState()
     val userEmailField = remember { mutableStateOf(TextFieldValue(user.userEmail)) }
     val userPasswordField = remember { mutableStateOf(TextFieldValue(user.userPassword)) }
     var snackbarVisibleState by remember { mutableStateOf(false) }
@@ -264,6 +267,10 @@ fun LoginTabScreen(
                 loginViewModel.loginUser()
             }
         )
+
+        GoogleSignInButton(viewModel = loginViewModel) {
+            navHostController.navigate(Screen.Home.route)
+        }
     }
 }
 
@@ -396,7 +403,6 @@ fun UserButton(onClick: () -> Unit, text: String) {
             .padding(25.dp),
         textAlign = TextAlign.Center
     )
-    SocialMediaImages()
 }
 
 @Composable
