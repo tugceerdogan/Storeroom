@@ -22,6 +22,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.storeroom.R
 import com.example.storeroom.nav.Screen
@@ -39,8 +40,6 @@ import com.example.storeroom.util.UIState
 
 @Composable
 fun LoginAndRegisterScreen(
-    loginViewModel: LoginViewModel,
-    registerViewModel: RegisterViewModel,
     navHostController: NavHostController
 ) {
     Column(
@@ -56,7 +55,7 @@ fun LoginAndRegisterScreen(
             clickableText = "Term and privacy policy"
         )
         Spacer(modifier = Modifier.height(45.dp))
-        LoginOrRegisterTabLayout(loginViewModel, registerViewModel, navHostController)
+        LoginOrRegisterTabLayout(navHostController)
         LoginSuccesfulSnackbar(
             snackbarVisibleState,
             "Login Successful"
@@ -126,11 +125,7 @@ fun TermAndPolicyText(
 }
 
 @Composable
-fun LoginOrRegisterTabLayout(
-    loginViewModel: LoginViewModel,
-    registerViewModel: RegisterViewModel,
-    navHostController: NavHostController
-) {
+fun LoginOrRegisterTabLayout(navHostController: NavHostController) {
     var selectedTabIndex by remember { mutableStateOf(0) }
 
     Column(Modifier.fillMaxSize()) {
@@ -164,9 +159,9 @@ fun LoginOrRegisterTabLayout(
 
         Box(modifier = Modifier.fillMaxSize()) {
             if (selectedTabIndex == 0) {
-                LoginTabScreen(loginViewModel, navHostController)
+                LoginTabScreen(navHostController = navHostController)
             } else {
-                RegisterTabScreen(registerViewModel, navHostController)
+                RegisterTabScreen(navHostController = navHostController)
             }
         }
     }
@@ -193,7 +188,7 @@ fun LoginSuccesfulSnackbar(
 
 @Composable
 fun LoginTabScreen(
-    loginViewModel: LoginViewModel,
+    loginViewModel: LoginViewModel = hiltViewModel(),
     navHostController: NavHostController,
 ) {
     val user by loginViewModel.userLogin.collectAsState()
@@ -268,6 +263,15 @@ fun LoginTabScreen(
             }
         )
 
+        Text(
+            text = "or connect with",
+            color = rememberPasswordTextColor,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(25.dp),
+            textAlign = TextAlign.Center
+        )
+
         GoogleSignInButton(viewModel = loginViewModel) {
             navHostController.navigate(Screen.Home.route)
         }
@@ -276,7 +280,7 @@ fun LoginTabScreen(
 
 @Composable
 fun RegisterTabScreen(
-    registerViewModel: RegisterViewModel,
+    registerViewModel: RegisterViewModel = hiltViewModel(),
     navHostController: NavHostController
 ) {
 
@@ -395,14 +399,6 @@ fun UserButton(onClick: () -> Unit, text: String) {
     ) {
         Text(text = text, style = whiteTextStyle)
     }
-    Text(
-        text = "or connect with",
-        color = rememberPasswordTextColor,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(25.dp),
-        textAlign = TextAlign.Center
-    )
 }
 
 @Composable
