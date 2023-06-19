@@ -1,47 +1,39 @@
 package com.example.storeroom.ui
 
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.*
 import androidx.compose.material.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.runtime.*
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.example.storeroom.R
-import com.example.storeroom.nav.Screen
-import com.example.storeroom.ui.login.LoginViewModel
-import com.example.storeroom.ui.register.RegisterViewModel
-import com.example.storeroom.util.GoogleSignInButton
+import com.example.storeroom.ui.components.CustomDialog
+import com.example.storeroom.ui.components.LoginTabScreen
+import com.example.storeroom.ui.components.RegisterTabScreen
 import com.example.storeroom.util.StoreroomTheme.customBoldFont
-import com.example.storeroom.util.StoreroomTheme.editTextBackgroundColor
-import com.example.storeroom.util.StoreroomTheme.rememberPasswordTextColor
 import com.example.storeroom.util.StoreroomTheme.termAndPolicyClickableTextColor
 import com.example.storeroom.util.StoreroomTheme.termAndPolicyTextColor
 import com.example.storeroom.util.StoreroomTheme.unselectTabColor
 import com.example.storeroom.util.StoreroomTheme.whiteTextStyle
-import com.example.storeroom.util.UIState
 
 @Composable
 fun LoginAndRegisterScreen(
     navHostController: NavHostController
 ) {
+
+    val showTermAndPolicyDialog = remember { mutableStateOf(false) }
+
     Column(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.Center,
@@ -50,10 +42,17 @@ fun LoginAndRegisterScreen(
         val snackbarVisibleState = remember { mutableStateOf(false) }
         TitleText()
         TermAndPolicyText(
-            onClick = {},
-            text = "By signing in you are agreeing our ",
-            clickableText = "Term and privacy policy"
+            onClick = { showTermAndPolicyDialog.value = true },
+            text = "By signing in you are agreeing",
+            clickableText = " Storeroom's Terms of Use and Privacy Policy"
         )
+        CustomDialog(
+            title = "Terms of Use and Privacy Policy",
+            description = "Bla bla blaaaaaa",
+            showDialog = showTermAndPolicyDialog.value,
+            onDismiss = { showTermAndPolicyDialog.value = false }
+        )
+
         Spacer(modifier = Modifier.height(45.dp))
         LoginOrRegisterTabLayout(navHostController)
         LoginSuccesfulSnackbar(
@@ -131,6 +130,7 @@ fun LoginOrRegisterTabLayout(navHostController: NavHostController) {
     Column(Modifier.fillMaxSize()) {
         TabRow(
             selectedTabIndex = selectedTabIndex,
+            modifier = Modifier.padding(horizontal = 30.dp),
             backgroundColor = Color.White,
             contentColor = unselectTabColor,
             indicator = { tabPositions ->
@@ -146,13 +146,13 @@ fun LoginOrRegisterTabLayout(navHostController: NavHostController) {
                 selected = selectedTabIndex == 0,
                 onClick = { selectedTabIndex = 0 }
             ) {
-                Text(text = "Login")
+                Text(text = "Login", Modifier.padding(vertical = 10.dp))
             }
             Tab(
                 selected = selectedTabIndex == 1,
                 onClick = { selectedTabIndex = 1 }
             ) {
-                Text(text = "Register")
+                Text(text = "Register", Modifier.padding(vertical = 10.dp))
             }
         }
         Spacer(modifier = Modifier.height(30.dp))
@@ -183,266 +183,6 @@ fun LoginSuccesfulSnackbar(
         ) {
             Text(text = snackbarText)
         }
-    }
-}
-
-@Composable
-fun LoginTabScreen(
-    loginViewModel: LoginViewModel = hiltViewModel(),
-    navHostController: NavHostController,
-) {
-    val user by loginViewModel.userLogin.collectAsState()
-    val googleUser by loginViewModel.user.observeAsState()
-    val userEmailField = remember { mutableStateOf(TextFieldValue(user.userEmail)) }
-    val userPasswordField = remember { mutableStateOf(TextFieldValue(user.userPassword)) }
-    var snackbarVisibleState by remember { mutableStateOf(false) }
-
-    val uiState by loginViewModel.uiState.collectAsState()
-
-    when (uiState) {
-        is UIState.Loading -> {
-        }
-        is UIState.Success -> {
-            if ((uiState as UIState.Success).data) {
-                navHostController.navigate(Screen.Home.route)
-            } else {
-                val scaffoldState = rememberScaffoldState()
-                LaunchedEffect(key1 = true) {
-                    scaffoldState.snackbarHostState.showSnackbar("Login failed")
-                }
-            }
-        }
-        is UIState.Error -> {
-            val scaffoldState = rememberScaffoldState()
-            LaunchedEffect(key1 = true) {
-                scaffoldState.snackbarHostState.showSnackbar(
-                    (uiState as UIState.Error).exception.message ?: "An error occurred"
-                )
-            }
-        }
-    }
-
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-
-        UserInputField(
-            value = userEmailField.value,
-            label = "Email Address",
-            onValueChange = { newValue ->
-                userEmailField.value = newValue
-                loginViewModel.updateUserEmail(newValue.text)
-            }
-        )
-
-        Spacer(modifier = Modifier.height(10.dp))
-
-        UserInputField(
-            value = userPasswordField.value,
-            label = "Password",
-            onValueChange = { newValue ->
-                userPasswordField.value = newValue
-                loginViewModel.updateUserPassword(newValue.text)
-            }
-        )
-        Spacer(modifier = Modifier.height(10.dp))
-
-        PasswordRow()
-
-        Spacer(modifier = Modifier.height(60.dp))
-
-        UserButton(
-            text = "Login",
-            onClick = {
-                println("Email Address: ${user.userEmail}")
-                println("Password : ${user.userPassword}")
-                snackbarVisibleState = true
-                loginViewModel.loginUser()
-            }
-        )
-
-        Text(
-            text = "or connect with",
-            color = rememberPasswordTextColor,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(25.dp),
-            textAlign = TextAlign.Center
-        )
-
-        GoogleSignInButton(viewModel = loginViewModel) {
-            navHostController.navigate(Screen.Home.route)
-        }
-    }
-}
-
-@Composable
-fun RegisterTabScreen(
-    registerViewModel: RegisterViewModel = hiltViewModel(),
-    navHostController: NavHostController
-) {
-
-    val user by registerViewModel.userRegister.collectAsState()
-
-    val userNameField = remember { mutableStateOf(TextFieldValue(user.userName)) }
-    val userEmailField = remember { mutableStateOf(TextFieldValue(user.userEmail)) }
-    val userPasswordField = remember { mutableStateOf(TextFieldValue(user.userPassword)) }
-
-    var snackbarVisibleState by remember { mutableStateOf(false) }
-
-    val uiState by registerViewModel.uiState.collectAsState()
-
-    when (uiState) {
-        is UIState.Loading -> {
-        }
-        is UIState.Success -> {
-            navHostController.navigate(Screen.Login.route)
-        }
-        is UIState.Error -> {
-            val scaffoldState = rememberScaffoldState()
-            LaunchedEffect(key1 = true) {
-                scaffoldState.snackbarHostState.showSnackbar(
-                    (uiState as UIState.Error).exception.message ?: "An error occurred"
-                )
-            }
-        }
-    }
-
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        UserInputField(
-            value = userNameField.value,
-            label = "Name",
-            onValueChange = { newValue ->
-                userNameField.value = newValue
-                registerViewModel.updateUserName(newValue.text)
-            }
-        )
-
-        Spacer(modifier = Modifier.height(10.dp))
-
-        UserInputField(
-            value = userEmailField.value,
-            label = "Email Address",
-            onValueChange = { newValue ->
-                userEmailField.value = newValue
-                registerViewModel.updateUserEmail(newValue.text)
-            }
-        )
-
-        Spacer(modifier = Modifier.height(10.dp))
-
-        UserInputField(
-            value = userPasswordField.value,
-            label = "Password",
-            onValueChange = { newValue ->
-                userPasswordField.value = newValue
-                registerViewModel.updateUserPassword(newValue.text)
-            }
-        )
-
-        Spacer(modifier = Modifier.height(90.dp))
-
-        UserButton(
-            onClick = {
-                println("User Name:  ${user.userName}")
-                println("Email Address: ${user.userEmail}")
-                println("Password : ${user.userPassword}")
-                snackbarVisibleState = true
-                registerViewModel.registerUser()
-            },
-            text = "Register"
-        )
-    }
-}
-
-@Composable
-fun UserInputField(
-    value: TextFieldValue,
-    label: String,
-    modifier: Modifier = Modifier,
-    onValueChange: (TextFieldValue) -> Unit
-) {
-
-    OutlinedTextField(
-        value = value,
-        onValueChange = onValueChange,
-        label = { Text(text = label, color = Color(0xFF928A9C)) },
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = 32.dp),
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            backgroundColor = editTextBackgroundColor,
-            textColor = Color.Black,
-            focusedBorderColor = Color(0xFF928A9C),
-            unfocusedBorderColor = Color(0xFFCCC9C9)
-        ),
-        shape = RoundedCornerShape(16.dp),
-    )
-}
-
-@Composable
-fun UserButton(onClick: () -> Unit, text: String) {
-    Button(
-        onClick = onClick,
-        colors = ButtonDefaults.buttonColors(backgroundColor = termAndPolicyClickableTextColor),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 32.dp)
-            .height(60.dp),
-        shape = RoundedCornerShape(16.dp),
-    ) {
-        Text(text = text, style = whiteTextStyle)
-    }
-}
-
-@Composable
-fun PasswordRow() {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 16.dp)
-    ) {
-        Checkbox(checked = false, onCheckedChange = { })
-        Text(
-            text = "Remember Password",
-            color = rememberPasswordTextColor
-        )
-        Text(
-            text = "Forget Password",
-            modifier = Modifier.padding(start = 58.dp),
-            color = termAndPolicyClickableTextColor
-        )
-    }
-}
-
-
-@Composable
-fun SocialMediaImages() {
-    val facebookIcon = painterResource(R.drawable.facebook_icon)
-    val googleIcon = painterResource(R.drawable.google_icon)
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Image(
-            painter = facebookIcon,
-            contentDescription = "Facebook",
-            modifier = Modifier
-                .size(50.dp)
-        )
-        Spacer(modifier = Modifier.width(20.dp))
-        Image(
-            painter = googleIcon,
-            contentDescription = "Google",
-            modifier = Modifier
-                .size(50.dp)
-        )
     }
 }
 

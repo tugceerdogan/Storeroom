@@ -1,4 +1,4 @@
-package com.example.storeroom.nav
+package com.example.storeroom.util
 
 sealed class Screen(val route: String) {
     object Login : Screen("login")

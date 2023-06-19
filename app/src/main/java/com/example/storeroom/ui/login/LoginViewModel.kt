@@ -40,8 +40,7 @@ class LoginViewModel @Inject constructor(
     fun loginUser() {
         viewModelScope.launch {
             try {
-                _uiState.value = UIState.Loading
-                val result =loginUseCase(_userLogin.value)
+                val result = loginUseCase(_userLogin.value)
                 _uiState.value = UIState.Success(result)
             } catch (e: FirebaseException) {
                 _uiState.value = UIState.Error(e)
