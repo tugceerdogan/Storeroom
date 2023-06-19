@@ -50,7 +50,7 @@ fun RegisterTabScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        UserInputField(
+        UserInputTextField(
             value = userNameField.value,
             label = "Name",
             onValueChange = { newValue ->
@@ -61,7 +61,7 @@ fun RegisterTabScreen(
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        UserInputField(
+        UserInputTextField(
             value = userEmailField.value,
             label = "Email Address",
             onValueChange = { newValue ->
@@ -72,7 +72,7 @@ fun RegisterTabScreen(
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        UserInputField(
+        UserPasswordInputField(
             value = userPasswordField.value,
             label = "Password",
             onValueChange = { newValue ->

@@ -38,7 +38,7 @@ fun LoginTabScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        UserInputField(
+        UserInputTextField(
             value = userEmailField.value,
             label = "Email Address",
             onValueChange = { newValue ->
@@ -49,7 +49,7 @@ fun LoginTabScreen(
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        UserInputField(
+        UserPasswordInputField(
             value = userPasswordField.value,
             label = "Password",
             onValueChange = { newValue ->

@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import com.example.storeroom.util.StoreroomTheme
 
 @Composable
-fun UserInputField(
+fun UserInputTextField(
     value: TextFieldValue,
     label: String,
     modifier: Modifier = Modifier,
