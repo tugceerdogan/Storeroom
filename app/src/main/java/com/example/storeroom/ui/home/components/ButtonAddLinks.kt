@@ -11,6 +11,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.storeroom.util.StoreroomTheme
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -28,6 +29,7 @@ fun ButtonAddLinks() {
                 .padding(paddingValues)
         ) {
             FloatingActionButton(
+                backgroundColor = StoreroomTheme.termAndPolicyClickableTextColor,
                 onClick = {
                     coroutineScope.launch {
                         bottomSheetState.show()

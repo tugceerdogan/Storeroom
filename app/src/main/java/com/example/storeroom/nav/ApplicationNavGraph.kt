@@ -7,6 +7,8 @@ import androidx.navigation.compose.rememberNavController
 import com.example.storeroom.ui.home.HomeScreen
 import com.example.storeroom.ui.loginregister.LoginAndRegisterScreen
 import com.example.storeroom.ui.categorydetail.CategoryDetailScreen
+import com.example.storeroom.ui.profile.ProfileScreen
+import com.example.storeroom.ui.search.SearchScreen
 import com.example.storeroom.util.Screen
 
 @Composable
@@ -22,6 +24,12 @@ fun ApplicationNavGraph() {
 
         composable(Screen.CategoryDetail.route) {
             CategoryDetailScreen(navHostController = navController)
+        }
+        composable(Screen.Search.route) {
+            SearchScreen(navHostController = navController)
+        }
+        composable(Screen.Profile.route) {
+            ProfileScreen(navHostController = navController)
         }
     }
 }

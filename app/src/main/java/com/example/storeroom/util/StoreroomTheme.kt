@@ -15,5 +15,5 @@ object StoreroomTheme {
     val unselectTabColor = Color(0xFFA6A6A6)
     val rememberPasswordTextColor = Color(0xFF6B5E5E)
     val editTextBackgroundColor = Color(0xFFF9F9F9)
-    val googleButtonColor = Color(0xFF9BD8FC)
+    val storeRoomBlue = Color(0xFF9BD8FC)
 }

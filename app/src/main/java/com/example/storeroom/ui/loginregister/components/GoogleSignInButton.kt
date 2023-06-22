@@ -58,7 +58,7 @@ fun GoogleSignInButton(
             val signInIntent = client.signInIntent
             signInLauncher.launch(signInIntent)
         },
-        colors = ButtonDefaults.buttonColors(backgroundColor = StoreroomTheme.googleButtonColor),
+        colors = ButtonDefaults.buttonColors(backgroundColor = StoreroomTheme.storeRoomBlue),
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 32.dp)
