@@ -9,7 +9,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import com.example.storeroom.ui.components.UserLinkTextField
+import com.example.storeroom.ui.loginregister.components.UserLinkTextField
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)

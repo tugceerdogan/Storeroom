@@ -1,4 +1,4 @@
-package com.example.storeroom.ui.components
+package com.example.storeroom.ui.loginregister.components
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth

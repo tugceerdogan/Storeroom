@@ -1,4 +1,4 @@
-package com.example.storeroom.ui.login
+package com.example.storeroom.ui.loginregister.login
 
 import android.content.ContentValues
 import android.content.Intent

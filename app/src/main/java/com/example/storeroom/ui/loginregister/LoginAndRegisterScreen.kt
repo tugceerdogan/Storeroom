@@ -1,4 +1,4 @@
-package com.example.storeroom.ui
+package com.example.storeroom.ui.loginregister
 
 
 import androidx.compose.foundation.layout.*
@@ -18,9 +18,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.example.storeroom.ui.components.CustomDialog
-import com.example.storeroom.ui.components.LoginTabScreen
-import com.example.storeroom.ui.components.RegisterTabScreen
+import com.example.storeroom.ui.loginregister.components.CustomDialog
+import com.example.storeroom.ui.loginregister.components.LoginTabScreen
+import com.example.storeroom.ui.loginregister.components.RegisterTabScreen
 import com.example.storeroom.util.StoreroomTheme.customBoldFont
 import com.example.storeroom.util.StoreroomTheme.termAndPolicyClickableTextColor
 import com.example.storeroom.util.StoreroomTheme.termAndPolicyTextColor
@@ -39,7 +39,6 @@ fun LoginAndRegisterScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        val snackbarVisibleState = remember { mutableStateOf(false) }
         TitleText()
         TermAndPolicyText(
             onClick = { showTermAndPolicyDialog.value = true },
@@ -55,10 +54,6 @@ fun LoginAndRegisterScreen(
 
         Spacer(modifier = Modifier.height(45.dp))
         LoginOrRegisterTabLayout(navHostController)
-        LoginSuccesfulSnackbar(
-            snackbarVisibleState,
-            "Login Successful"
-        )
     }
 }
 
@@ -163,25 +158,6 @@ fun LoginOrRegisterTabLayout(navHostController: NavHostController) {
             } else {
                 RegisterTabScreen(navHostController = navHostController)
             }
-        }
-    }
-}
-
-@Composable
-fun LoginSuccesfulSnackbar(
-    snackbarVisibleState: MutableState<Boolean>,
-    snackbarText: String
-) {
-    if (snackbarVisibleState.value) {
-        Snackbar(
-            action = {
-                TextButton(onClick = { snackbarVisibleState.value = false }) {
-                    Text(text = "OK", style = whiteTextStyle)
-                }
-            },
-            modifier = Modifier.padding(top = 50.dp)
-        ) {
-            Text(text = snackbarText)
         }
     }
 }

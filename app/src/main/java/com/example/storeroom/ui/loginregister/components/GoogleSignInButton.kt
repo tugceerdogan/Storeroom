@@ -1,4 +1,4 @@
-package com.example.storeroom.ui.components
+package com.example.storeroom.ui.loginregister.components
 
 import android.app.Activity
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -20,7 +20,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.storeroom.BuildConfig
 import com.example.storeroom.R
-import com.example.storeroom.ui.login.LoginViewModel
+import com.example.storeroom.ui.loginregister.login.LoginViewModel
 import com.example.storeroom.util.StoreroomTheme
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions

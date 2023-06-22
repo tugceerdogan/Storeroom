@@ -5,7 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.storeroom.ui.home.HomeScreen
-import com.example.storeroom.ui.LoginAndRegisterScreen
+import com.example.storeroom.ui.loginregister.LoginAndRegisterScreen
 import com.example.storeroom.ui.categorydetail.CategoryDetailScreen
 import com.example.storeroom.util.Screen
 

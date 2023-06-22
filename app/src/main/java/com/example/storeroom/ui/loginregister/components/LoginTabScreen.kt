@@ -1,4 +1,4 @@
-package com.example.storeroom.ui.components
+package com.example.storeroom.ui.loginregister.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -13,9 +13,11 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.storeroom.util.Screen
-import com.example.storeroom.ui.login.LoginViewModel
+import com.example.storeroom.ui.loginregister.login.LoginViewModel
+import com.example.storeroom.util.CustomLoading
 import com.example.storeroom.util.StoreroomTheme
 import com.example.storeroom.util.UIState
+import kotlinx.coroutines.launch
 
 @Composable
 fun LoginTabScreen(
@@ -31,6 +33,7 @@ fun LoginTabScreen(
     val uiState by loginViewModel.uiState.collectAsState()
 
     val scaffoldState = rememberScaffoldState()
+    val coroutineScope = rememberCoroutineScope()
 
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -82,7 +85,11 @@ fun LoginTabScreen(
         GoogleSignInButton(
             viewModel = loginViewModel,
             onSignedIn = { navHostController.navigate(Screen.Home.route) },
-            onError = {}
+            onError = {
+                coroutineScope.launch {
+                    scaffoldState.snackbarHostState.showSnackbar("An error occurred")
+                }
+            }
         )
     }
 
@@ -92,25 +99,13 @@ fun LoginTabScreen(
         is UIState.Success -> {
             val successData = (uiState as UIState.Success).data
             if (successData) {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Column(
-                        modifier = Modifier.padding(16.dp),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        CircularProgressIndicator(
-                            color = Color.Red,
-                        )
-                        Spacer(modifier = Modifier.height(16.dp))
-                        Text("Loading...")
-                    }
-                }
+                CustomLoading()
                 navHostController.navigate(Screen.Home.route)
+                coroutineScope.launch {
+                    scaffoldState.snackbarHostState.showSnackbar("Login successful")
+                }
             } else {
-                LaunchedEffect(key1 = scaffoldState.snackbarHostState) {
+                coroutineScope.launch {
                     scaffoldState.snackbarHostState.showSnackbar("Login failed")
                 }
             }
@@ -118,7 +113,7 @@ fun LoginTabScreen(
         is UIState.Error -> {
             val errorException = (uiState as UIState.Error).exception
 
-            LaunchedEffect(key1 = scaffoldState.snackbarHostState) {
+            coroutineScope.launch {
                 scaffoldState.snackbarHostState.showSnackbar(
                     errorException.message ?: "An error occurred"
                 )

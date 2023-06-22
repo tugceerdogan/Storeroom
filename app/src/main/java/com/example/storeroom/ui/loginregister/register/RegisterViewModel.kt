@@ -1,4 +1,4 @@
-package com.example.storeroom.ui.register
+package com.example.storeroom.ui.loginregister.register
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -25,17 +25,7 @@ class RegisterViewModel @Inject constructor(
 
 
     fun registerUser() {
-        viewModelScope.launch {
-            try {
-                _uiState.value = UIState.Loading
-                val result =registerUseCase(_userRegister.value)
-                _uiState.value = UIState.Success(result)
-            } catch (e: FirebaseException) {
-                _uiState.value = UIState.Error(e)
-                //_errorMessage.value = e.localizedMessage
-            }
-        }
-/*        if (isEmailValid(_userRegister.value.userEmail)) {
+        if (isEmailValid(_userRegister.value.userEmail)) {
             viewModelScope.launch {
                 try {
                     _uiState.value = UIState.Loading
@@ -49,7 +39,7 @@ class RegisterViewModel @Inject constructor(
             }
         } else {
             println("Email is not valid")
-        }*/
+        }
     }
 
     fun updateUserName(newUserName: String) {

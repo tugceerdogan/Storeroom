@@ -1,4 +1,4 @@
-package com.example.storeroom.ui.components
+package com.example.storeroom.ui.loginregister.components
 
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Text
