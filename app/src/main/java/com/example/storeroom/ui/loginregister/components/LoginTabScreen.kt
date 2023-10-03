@@ -6,11 +6,11 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.example.storeroom.util.Screen
 import com.example.storeroom.ui.loginregister.login.LoginViewModel
@@ -24,13 +24,13 @@ fun LoginTabScreen(
     loginViewModel: LoginViewModel = hiltViewModel(),
     navHostController: NavHostController,
 ) {
-    val userLoginState by loginViewModel.userLogin.collectAsState()
+    val userLoginState by loginViewModel.userLogin.collectAsStateWithLifecycle()
     val userState by loginViewModel.user.observeAsState()
 
     val userEmailField = remember { mutableStateOf(TextFieldValue(userLoginState.userEmail)) }
     val userPasswordField = remember { mutableStateOf(TextFieldValue(userLoginState.userPassword)) }
 
-    val uiState by loginViewModel.uiState.collectAsState()
+    val uiState by loginViewModel.uiState.collectAsStateWithLifecycle()
 
     val scaffoldState = rememberScaffoldState()
     val coroutineScope = rememberCoroutineScope()

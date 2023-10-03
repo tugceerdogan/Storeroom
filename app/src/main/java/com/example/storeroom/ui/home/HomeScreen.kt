@@ -49,7 +49,7 @@ fun HomeScreen(navHostController: NavHostController) {
                 Spacer(modifier = Modifier.height(20.dp))
                 CategoriesFlowRowList(navHostController)
                 Spacer(modifier = Modifier.height(20.dp))
-                ButtonAddLinks()
+                ButtonAddLinks(navHostController)
             }
         }
     }

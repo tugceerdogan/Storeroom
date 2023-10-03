@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
@@ -25,6 +26,7 @@ fun BottomSheetAddLinks(scaffoldState: ScaffoldState, bottomSheetState: ModalBot
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .wrapContentSize(Alignment.TopStart)
                     .padding(16.dp)
             ) {
                 Text(text = "Enter Link:")

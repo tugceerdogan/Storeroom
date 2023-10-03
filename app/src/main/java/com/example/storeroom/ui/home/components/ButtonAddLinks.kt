@@ -7,20 +7,17 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import com.example.storeroom.util.Screen
 import com.example.storeroom.util.StoreroomTheme
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun ButtonAddLinks() {
+fun ButtonAddLinks(navHostController: NavHostController) {
     val scaffoldState = rememberScaffoldState()
-    val bottomSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
-
-    val coroutineScope = rememberCoroutineScope()
 
     Scaffold(scaffoldState = scaffoldState) { paddingValues ->
         Box(
@@ -30,18 +27,13 @@ fun ButtonAddLinks() {
         ) {
             FloatingActionButton(
                 backgroundColor = StoreroomTheme.termAndPolicyClickableTextColor,
-                onClick = {
-                    coroutineScope.launch {
-                        bottomSheetState.show()
-                    }
-                },
+                onClick = { navHostController.navigate(Screen.Link.route) },
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .padding(32.dp)
             ) {
                 Icon(Icons.Default.Add, contentDescription = "Add a link")
             }
-            BottomSheetAddLinks(scaffoldState, bottomSheetState)
         }
     }
 }

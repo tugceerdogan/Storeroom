@@ -101,4 +101,7 @@ dependencies {
     //Google-SignIn
     implementation 'com.google.android.gms:play-services-auth:20.6.0'
 
+    //collectAsStateWithLifecycle()
+    implementation("androidx.lifecycle:lifecycle-runtime-compose")
+
 }

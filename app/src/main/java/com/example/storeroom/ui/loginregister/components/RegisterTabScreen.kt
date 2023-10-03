@@ -1,5 +1,6 @@
 package com.example.storeroom.ui.loginregister.components
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.*
@@ -8,26 +9,28 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.example.storeroom.util.Screen
 import com.example.storeroom.ui.loginregister.register.RegisterViewModel
 import com.example.storeroom.util.UIState
 import kotlinx.coroutines.launch
 
+@SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun RegisterTabScreen(
     registerViewModel: RegisterViewModel = hiltViewModel(),
     navHostController: NavHostController
 ) {
 
-    val user by registerViewModel.userRegister.collectAsState()
+    val user by registerViewModel.userRegister.collectAsStateWithLifecycle()
 
     val userNameField = remember { mutableStateOf(TextFieldValue(user.userName)) }
     val userEmailField = remember { mutableStateOf(TextFieldValue(user.userEmail)) }
     val userPasswordField = remember { mutableStateOf(TextFieldValue(user.userPassword)) }
 
 
-    val uiState by registerViewModel.uiState.collectAsState()
+    val uiState by registerViewModel.uiState.collectAsStateWithLifecycle()
     val coroutineScope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
 
