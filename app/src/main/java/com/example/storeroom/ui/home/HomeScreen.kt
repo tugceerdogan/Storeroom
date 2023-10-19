@@ -8,15 +8,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.example.storeroom.ui.home.components.BackgroundComponent
 import com.example.storeroom.ui.home.components.ButtonAddLinks
 import com.example.storeroom.ui.home.components.CategoriesFlowRowList
+import com.example.storeroom.ui.home.components.EmptyHomeScreen
 import com.example.storeroom.util.BottomNavigationWrapper
 import com.example.storeroom.util.StoreroomTheme
 
 @Composable
-fun HomeScreen(navHostController: NavHostController) {
+fun HomeScreen(navHostController: NavHostController, viewModel: HomeViewModel = hiltViewModel()) {
+
+    val categories = viewModel.categories.collectAsStateWithLifecycle()
+
     BottomNavigationWrapper(navHostController) {
         Box(
             modifier = Modifier.fillMaxSize()
@@ -47,7 +53,11 @@ fun HomeScreen(navHostController: NavHostController) {
                     ),
                 )
                 Spacer(modifier = Modifier.height(20.dp))
-                CategoriesFlowRowList(navHostController)
+                if(categories.value.isNotEmpty()) CategoriesFlowRowList(navHostController, categories.value)
+                else {
+                    Spacer(modifier = Modifier.height(50.dp))
+                    EmptyHomeScreen()
+                }
                 Spacer(modifier = Modifier.height(20.dp))
                 ButtonAddLinks(navHostController)
             }

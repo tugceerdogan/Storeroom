@@ -12,16 +12,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 
 @Composable
-fun CategoriesFlowRowList(navHostController: NavHostController) {
-    val items = listOf(
-        "Category 1",
-        "Category 2",
-        "Category 3738478669",
-        "Category AGAHSDFH Category AGAHSDFH",
-        "Category",
-        "Category XXX"
-    )
-    val chunkedItems = items.chunked(2)
+fun CategoriesFlowRowList(navHostController: NavHostController, list: List<String?>) {
+
+    val chunkedItems = list.chunked(2)
 
     LazyColumn {
         items(chunkedItems) { rowItems ->

@@ -2,6 +2,8 @@ package com.example.storeroom
 
 import com.example.storeroom.domain.link.AddLinkRepository
 import com.example.storeroom.domain.link.AddLinkRepositoryImpl
+import com.example.storeroom.domain.link.GetLinkRepository
+import com.example.storeroom.domain.link.GetLinkRepositoryImpl
 import com.example.storeroom.domain.login.LoginRepository
 import com.example.storeroom.domain.login.LoginRepositoryImpl
 import com.example.storeroom.domain.register.RegisterRepository
@@ -23,4 +25,7 @@ abstract class UserRepositoryModule {
 
     @Binds
     abstract fun bindAddLinkRepository(impl: AddLinkRepositoryImpl): AddLinkRepository
+
+    @Binds
+    abstract fun bindGetLinkRepository(impl: GetLinkRepositoryImpl): GetLinkRepository
 }

@@ -20,14 +20,14 @@ import com.example.storeroom.util.Screen
 import com.example.storeroom.util.StoreroomTheme
 
 @Composable
-fun CategoryItemCard(item: String, navHostController: NavHostController) {
+fun CategoryItemCard(item: String?, navHostController: NavHostController) {
     ClickableCard(item) {
         navHostController.navigate(Screen.CategoryDetail.route)
     }
 }
 
 @Composable
-fun ClickableCard(item: String, onClick: () -> Unit) {
+fun ClickableCard(item: String?, onClick: () -> Unit) {
     Card(
         modifier = Modifier
             .padding(16.dp)
@@ -42,7 +42,7 @@ fun ClickableCard(item: String, onClick: () -> Unit) {
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = item,
+                text = item ?:"",
                 style = MaterialTheme.typography.body1.copy(
                     color = Color.Black,
                     fontSize = 25.sp,
