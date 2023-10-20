@@ -5,8 +5,8 @@ import androidx.navigation.NavHostController
 import com.example.storeroom.util.Screen
 
 @Composable
-fun CategoryItemCard(item: String?, navHostController: NavHostController) {
+fun SeeMoreItemCard(item: String?, navHostController: NavHostController) {
     ClickableCard(item) {
-        navHostController.navigate(Screen.CategoryDetail.route)
+        navHostController.navigate(Screen.CategoryList.route)
     }
 }

@@ -58,7 +58,6 @@ fun HomeScreen(navHostController: NavHostController, viewModel: HomeViewModel = 
                     Spacer(modifier = Modifier.height(50.dp))
                     EmptyHomeScreen()
                 }
-                Spacer(modifier = Modifier.height(20.dp))
                 ButtonAddLinks(navHostController)
             }
         }

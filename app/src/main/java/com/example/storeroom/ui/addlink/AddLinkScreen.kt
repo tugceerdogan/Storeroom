@@ -1,4 +1,4 @@
-package com.example.storeroom.ui.link
+package com.example.storeroom.ui.addlink
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
@@ -12,13 +12,20 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavHostController
 import com.example.storeroom.ui.loginregister.components.UserButton
 import com.example.storeroom.ui.loginregister.components.UserInputTextField
+import com.example.storeroom.util.Screen
 
 @Composable
-fun LinkScreen(linkAddScreenViewModel: LinkAddScreenViewModel = hiltViewModel()) {
+fun AddLinkScreen(
+    navHostController: NavHostController,
+    addLinkScreenViewModel: AddLinkScreenViewModel = hiltViewModel()
+) {
 
-    val userLinkInfo by linkAddScreenViewModel.userLinkInfo.collectAsStateWithLifecycle()
+    val userLinkInfo by addLinkScreenViewModel.userLinkInfo.collectAsStateWithLifecycle()
+
+    val addLinkResult by addLinkScreenViewModel.addLinkResult.collectAsStateWithLifecycle()
 
     val textLinkValue = remember { mutableStateOf(TextFieldValue(userLinkInfo.url)) }
     val textCategoryValue = remember { mutableStateOf(TextFieldValue(userLinkInfo.category)) }
@@ -39,7 +46,7 @@ fun LinkScreen(linkAddScreenViewModel: LinkAddScreenViewModel = hiltViewModel())
                 label = "Enter Link",
                 onValueChange = {
                     textLinkValue.value = it
-                    linkAddScreenViewModel.updateUrl(it.text)
+                    addLinkScreenViewModel.updateUrl(it.text)
                 }
             )
 
@@ -50,14 +57,17 @@ fun LinkScreen(linkAddScreenViewModel: LinkAddScreenViewModel = hiltViewModel())
                 label = "Enter Category",
                 onValueChange = {
                     textCategoryValue.value = it
-                    linkAddScreenViewModel.updateCategory(it.text)
+                    addLinkScreenViewModel.updateCategory(it.text)
                 },
             )
 
             Spacer(modifier = Modifier.height(30.dp))
 
             UserButton(
-                onClick = { linkAddScreenViewModel.addLinkToUser() },
+                onClick = {
+                    addLinkScreenViewModel.addLinkToUser()
+                    navHostController.navigate(Screen.Home.route)
+                },
                 text = "Save"
             )
         }
@@ -67,5 +77,5 @@ fun LinkScreen(linkAddScreenViewModel: LinkAddScreenViewModel = hiltViewModel())
 @Preview
 @Composable
 fun PreviewLinkScreen() {
-    LinkScreen()
+    /*    AddLinkScreen()*/
 }

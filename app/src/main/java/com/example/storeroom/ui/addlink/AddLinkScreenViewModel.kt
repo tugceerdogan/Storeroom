@@ -1,4 +1,4 @@
-package com.example.storeroom.ui.link
+package com.example.storeroom.ui.addlink
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LinkAddScreenViewModel @Inject constructor(
+class AddLinkScreenViewModel @Inject constructor(
     private val addLinkUseCase: AddLinkUseCase
 ) : ViewModel() {
 
@@ -19,6 +19,7 @@ class LinkAddScreenViewModel @Inject constructor(
     val userLinkInfo: StateFlow<UserLinkInfo> = _userLinkInfo
 
     private val _addLinkResult = MutableStateFlow(Result.success(Unit))
+    val addLinkResult: StateFlow<Result<Unit>> = _addLinkResult
 
     fun addLinkToUser() {
         viewModelScope.launch {
