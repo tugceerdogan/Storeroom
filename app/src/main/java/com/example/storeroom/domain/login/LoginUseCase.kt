@@ -5,6 +5,7 @@ import javax.inject.Inject
 
 interface LoginUseCase {
     suspend operator fun invoke(userLogin: UserLogin): Boolean
+    suspend fun getLoggedInStatus() : Boolean
 }
 
 class LoginUseCaseImpl @Inject constructor(
@@ -13,5 +14,9 @@ class LoginUseCaseImpl @Inject constructor(
 
     override suspend fun invoke(userLogin: UserLogin): Boolean {
         return loginRepository(userLogin)
+    }
+
+    override suspend fun getLoggedInStatus(): Boolean {
+        return loginRepository.getLoggedInStatus()
     }
 }

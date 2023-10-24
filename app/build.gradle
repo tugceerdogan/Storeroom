@@ -104,4 +104,6 @@ dependencies {
     //collectAsStateWithLifecycle()
     implementation("androidx.lifecycle:lifecycle-runtime-compose")
 
+    //sharepref
+    implementation "androidx.preference:preference-ktx:1.2.1"
 }

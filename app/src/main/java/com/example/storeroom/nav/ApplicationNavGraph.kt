@@ -11,12 +11,16 @@ import com.example.storeroom.ui.addlink.AddLinkScreen
 import com.example.storeroom.ui.categoryList.CategoryListScreen
 import com.example.storeroom.ui.profile.ProfileScreen
 import com.example.storeroom.ui.search.SearchScreen
+import com.example.storeroom.ui.splash.SplashScreen
 import com.example.storeroom.util.Screen
 
 @Composable
 fun ApplicationNavGraph() {
     val navController = rememberNavController()
     NavHost(navController, startDestination = Screen.Login.route) {
+        composable(Screen.Splash.route) {
+            SplashScreen(navHostController = navController)
+        }
         composable(Screen.Login.route) {
             LoginAndRegisterScreen(navHostController = navController)
         }

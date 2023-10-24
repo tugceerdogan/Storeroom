@@ -7,6 +7,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.ui.graphics.vector.ImageVector
 
 sealed class Screen(val route: String, val title: String? = null, val icon: ImageVector? = null) {
+    object Splash : Screen("splash")
     object Login : Screen("login")
     object Home : Screen("home", "Home", Icons.Filled.Home)
     object CategoryDetail : Screen("categoryDetail")

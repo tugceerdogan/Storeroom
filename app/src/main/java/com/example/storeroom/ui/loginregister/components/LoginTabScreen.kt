@@ -35,6 +35,12 @@ fun LoginTabScreen(
     val scaffoldState = rememberScaffoldState()
     val coroutineScope = rememberCoroutineScope()
 
+    val isLoggedIn by loginViewModel.isLoggedIn.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        loginViewModel.checkUserLoggedInStatus()
+    }
+
     Column(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.Center,
@@ -119,5 +125,10 @@ fun LoginTabScreen(
                 )
             }
         }
+    }
+
+    if (isLoggedIn) {
+        navHostController.navigate(Screen.Home.route)
+    } else {
     }
 }

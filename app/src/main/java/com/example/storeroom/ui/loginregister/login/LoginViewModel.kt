@@ -18,6 +18,7 @@ import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -36,6 +37,9 @@ class LoginViewModel @Inject constructor(
 
     private val _user = MutableLiveData<FirebaseUser?>(null)
     val user: LiveData<FirebaseUser?> = _user
+
+    private val _isLoggedIn = MutableStateFlow(false)
+    val isLoggedIn : StateFlow<Boolean> = _isLoggedIn.asStateFlow()
 
     fun loginUser() {
         viewModelScope.launch {
@@ -67,4 +71,9 @@ class LoginViewModel @Inject constructor(
                 }
             }
     }
+
+    fun checkUserLoggedInStatus()= viewModelScope.launch {
+        _isLoggedIn.value = loginUseCase.getLoggedInStatus()
+    }
+
 }

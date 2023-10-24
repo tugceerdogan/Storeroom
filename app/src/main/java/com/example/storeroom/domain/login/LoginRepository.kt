@@ -1,6 +1,7 @@
 package com.example.storeroom.domain.login
 
 import com.example.storeroom.data.login.UserLogin
+import com.example.storeroom.domain.auth.UserSessionManager
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
@@ -10,18 +11,32 @@ import javax.inject.Inject
 
 interface LoginRepository {
     suspend operator fun invoke(userLogin: UserLogin): Boolean
+    suspend fun getLoggedInStatus(): Boolean
 }
-class LoginRepositoryImpl @Inject constructor() : LoginRepository {
+
+class LoginRepositoryImpl @Inject constructor(
+    private val userSessionManager: UserSessionManager
+) : LoginRepository {
     private val auth = Firebase.auth
 
-    override suspend fun invoke(userLogin: UserLogin): Boolean  = withContext(Dispatchers.IO) {
+    override suspend fun invoke(userLogin: UserLogin): Boolean = withContext(Dispatchers.IO) {
         try {
-            auth.signInWithEmailAndPassword(userLogin.userEmail,userLogin.userPassword).await()
+            auth.signInWithEmailAndPassword(userLogin.userEmail, userLogin.userPassword).await()
             val firebaseUser = auth.currentUser
-            firebaseUser != null
+            val isLoggedIn = firebaseUser != null
+
+            if (isLoggedIn) {
+                userSessionManager.setLoggedInStatus(true)
+            }
+
+            return@withContext isLoggedIn
         } catch (e: Exception) {
             e.printStackTrace()
-            false
+            return@withContext false
         }
+    }
+
+    override suspend fun getLoggedInStatus(): Boolean {
+        return userSessionManager.isLoggedIn()
     }
 }
