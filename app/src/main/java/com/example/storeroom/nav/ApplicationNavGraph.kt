@@ -9,6 +9,7 @@ import com.example.storeroom.ui.loginregister.LoginAndRegisterScreen
 import com.example.storeroom.ui.categorydetail.CategoryDetailScreen
 import com.example.storeroom.ui.addlink.AddLinkScreen
 import com.example.storeroom.ui.categoryList.CategoryListScreen
+import com.example.storeroom.ui.favorite.FavoriteScreen
 import com.example.storeroom.ui.profile.ProfileScreen
 import com.example.storeroom.ui.search.SearchScreen
 import com.example.storeroom.ui.splash.SplashScreen
@@ -41,6 +42,9 @@ fun ApplicationNavGraph() {
         }
         composable(Screen.Link.route) {
             AddLinkScreen(navHostController = navController)
+        }
+        composable(Screen.Favorite.route) {
+            FavoriteScreen(navHostController = navController)
         }
     }
 }

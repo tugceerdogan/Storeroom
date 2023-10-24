@@ -1,6 +1,7 @@
 package com.example.storeroom.util
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
@@ -10,6 +11,7 @@ sealed class Screen(val route: String, val title: String? = null, val icon: Imag
     object Splash : Screen("splash")
     object Login : Screen("login")
     object Home : Screen("home", "Home", Icons.Filled.Home)
+    object Favorite : Screen("favorite", "Favorite", Icons.Filled.Favorite)
     object CategoryDetail : Screen("categoryDetail")
     object CategoryList : Screen("categoryList")
     object Link : Screen("link")

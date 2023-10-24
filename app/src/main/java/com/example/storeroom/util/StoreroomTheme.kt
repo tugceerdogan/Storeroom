@@ -16,4 +16,5 @@ object StoreroomTheme {
     val rememberPasswordTextColor = Color(0xFF6B5E5E)
     val editTextBackgroundColor = Color(0xFFF9F9F9)
     val storeRoomBlue = Color(0xFF9BD8FC)
+    val veryLightGray = Color(0xF0F0F0C)
 }

@@ -15,6 +15,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.example.storeroom.ui.loginregister.components.UserButton
 import com.example.storeroom.ui.loginregister.components.UserInputTextField
+import com.example.storeroom.util.BottomNavigationWrapper
 import com.example.storeroom.util.Screen
 
 @Composable
@@ -30,46 +31,48 @@ fun AddLinkScreen(
     val textLinkValue = remember { mutableStateOf(TextFieldValue(userLinkInfo.url)) }
     val textCategoryValue = remember { mutableStateOf(TextFieldValue(userLinkInfo.category)) }
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .wrapContentSize(Alignment.Center)
-    ) {
-        Column(
+    BottomNavigationWrapper(navHostController) {
+        Box(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
+                .fillMaxSize()
+                .wrapContentSize(Alignment.Center)
         ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            ) {
 
-            UserInputTextField(
-                value = textLinkValue.value,
-                label = "Enter Link",
-                onValueChange = {
-                    textLinkValue.value = it
-                    addLinkScreenViewModel.updateUrl(it.text)
-                }
-            )
+                UserInputTextField(
+                    value = textLinkValue.value,
+                    label = "Enter Link",
+                    onValueChange = {
+                        textLinkValue.value = it
+                        addLinkScreenViewModel.updateUrl(it.text)
+                    }
+                )
 
-            Spacer(modifier = Modifier.height(15.dp))
+                Spacer(modifier = Modifier.height(15.dp))
 
-            UserInputTextField(
-                value = textCategoryValue.value,
-                label = "Enter Category",
-                onValueChange = {
-                    textCategoryValue.value = it
-                    addLinkScreenViewModel.updateCategory(it.text)
-                },
-            )
+                UserInputTextField(
+                    value = textCategoryValue.value,
+                    label = "Enter Category",
+                    onValueChange = {
+                        textCategoryValue.value = it
+                        addLinkScreenViewModel.updateCategory(it.text)
+                    },
+                )
 
-            Spacer(modifier = Modifier.height(30.dp))
+                Spacer(modifier = Modifier.height(30.dp))
 
-            UserButton(
-                onClick = {
-                    addLinkScreenViewModel.addLinkToUser()
-                    navHostController.navigate(Screen.Home.route)
-                },
-                text = "Save"
-            )
+                UserButton(
+                    onClick = {
+                        addLinkScreenViewModel.addLinkToUser()
+                        navHostController.navigate(Screen.Home.route)
+                    },
+                    text = "Save"
+                )
+            }
         }
     }
 }

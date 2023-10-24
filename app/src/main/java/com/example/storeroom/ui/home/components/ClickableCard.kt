@@ -31,7 +31,7 @@ fun ClickableCard(item: String?, onClick: () -> Unit) {
     Card(
         modifier = Modifier
             .padding(16.dp)
-            .size(150.dp, 120.dp)
+            .size(140.dp, 120.dp)
             .clickable(onClick = onClick),
         elevation = 8.dp,
     ) {
