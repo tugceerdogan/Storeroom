@@ -7,6 +7,7 @@ import com.example.storeroom.util.Screen
 @Composable
 fun CategoryItemCard(item: String?, navHostController: NavHostController) {
     ClickableCard(item) {
-        navHostController.navigate(Screen.CategoryDetail.route)
+        val route = Screen.CategoryDetail(item).route
+        navHostController.navigate(route)
     }
 }

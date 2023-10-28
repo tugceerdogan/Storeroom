@@ -12,7 +12,13 @@ sealed class Screen(val route: String, val title: String? = null, val icon: Imag
     object Login : Screen("login")
     object Home : Screen("home", "Home", Icons.Filled.Home)
     object Favorite : Screen("favorite", "Favorite", Icons.Filled.Favorite)
-    object CategoryDetail : Screen("categoryDetail")
+    data class CategoryDetail(val categoryName: String?) : Screen("categoryDetail/$categoryName") {
+        companion object {
+            const val ROUTE_TEMPLATE = "categoryDetail/{categoryName}"
+            const val ARG_CATEGORY_NAME = "categoryName"
+        }
+    }
+    object LinkDetail : Screen("linkDetail")
     object CategoryList : Screen("categoryList")
     object Link : Screen("link")
     object Search : Screen("search", "Search", Icons.Filled.Search)

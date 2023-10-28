@@ -3,7 +3,6 @@ package com.example.storeroom.ui.categoryList
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -12,27 +11,24 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.Alignment
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
-import com.example.storeroom.ui.home.HomeViewModel
 import com.example.storeroom.ui.search.SearchBar
 import com.example.storeroom.util.Screen
 import com.example.storeroom.util.StoreroomTheme
 
 @Composable
-fun CategoryListScreen(
+fun CategoryStaggeredListScreen(
     navHostController: NavHostController,
-    viewModel: HomeViewModel = hiltViewModel()
+    viewModel: CategoryStaggeredListViewModel = hiltViewModel()
 ) {
 
     val categories = viewModel.categories.collectAsStateWithLifecycle()
@@ -69,50 +65,47 @@ fun CategoryListScreen(
 
 @Composable
 fun AllCategoriesList(categories: List<String?>, navHostController: NavHostController) {
-    LazyColumn {
-        items(categories) {
-            CategoryItem(item = it, navHostController = navHostController)
+    LazyVerticalStaggeredGrid(
+        columns = StaggeredGridCells.Adaptive(minSize = 128.dp),
+        contentPadding = PaddingValues(12.dp),
+        modifier = Modifier.padding(vertical = 4.dp)
+    ) {
+        items(categories.distinct().size) { index ->
+            CategoryItem(item = categories.distinct()[index], navHostController = navHostController)
         }
     }
 }
 
 @Composable
 fun CategoryItem(item: String?, navHostController: NavHostController) {
+    val cardHeight = remember { listOf(80.dp, 100.dp, 120.dp, 140.dp, 160.dp).random() }
     Card(
         modifier = Modifier
+            .padding(8.dp)
+            .height(cardHeight)
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp)
             .clickable {
-                navHostController.navigate(Screen.CategoryDetail.route)
+                val route = Screen.CategoryDetail(item).route
+                navHostController.navigate(route)
             },
         elevation = 4.dp,
         shape = RoundedCornerShape(8.dp)
     ) {
         Row(
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxSize()
                 .background(color = Color.White),
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-
             Text(
                 text = item ?: "",
-                textAlign = TextAlign.Start,
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(top = 20.dp, bottom = 20.dp, start = 32.dp),
+                textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.body1.copy(
                     color = StoreroomTheme.termAndPolicyClickableTextColor,
                     fontSize = 25.sp,
                     fontFamily = StoreroomTheme.customBoldFont
                 ),
-            )
-            Icon(
-                imageVector = Icons.Default.ArrowForward,
-                contentDescription = "Redirect Button",
-                modifier = Modifier
-                    .padding(top = 20.dp, bottom = 20.dp, end = 32.dp),
-                tint = StoreroomTheme.termAndPolicyClickableTextColor,
             )
         }
     }

@@ -8,8 +8,9 @@ import com.example.storeroom.ui.home.HomeScreen
 import com.example.storeroom.ui.loginregister.LoginAndRegisterScreen
 import com.example.storeroom.ui.categorydetail.CategoryDetailScreen
 import com.example.storeroom.ui.addlink.AddLinkScreen
-import com.example.storeroom.ui.categoryList.CategoryListScreen
+import com.example.storeroom.ui.categoryList.CategoryStaggeredListScreen
 import com.example.storeroom.ui.favorite.FavoriteScreen
+import com.example.storeroom.ui.linkdetail.LinkDetailScreen
 import com.example.storeroom.ui.profile.ProfileScreen
 import com.example.storeroom.ui.search.SearchScreen
 import com.example.storeroom.ui.splash.SplashScreen
@@ -29,10 +30,11 @@ fun ApplicationNavGraph() {
             HomeScreen(navHostController = navController)
         }
         composable(Screen.CategoryList.route) {
-            CategoryListScreen(navHostController = navController)
+            CategoryStaggeredListScreen(navHostController = navController)
         }
-        composable(Screen.CategoryDetail.route) {
-            CategoryDetailScreen(navHostController = navController)
+        composable(Screen.CategoryDetail.ROUTE_TEMPLATE) { backStackEntry ->
+            val categoryName = backStackEntry.arguments?.getString(Screen.CategoryDetail.ARG_CATEGORY_NAME)
+            CategoryDetailScreen(navHostController = navController, categoryName = categoryName)
         }
         composable(Screen.Search.route) {
             SearchScreen(navHostController = navController)
@@ -45,6 +47,9 @@ fun ApplicationNavGraph() {
         }
         composable(Screen.Favorite.route) {
             FavoriteScreen(navHostController = navController)
+        }
+        composable(Screen.LinkDetail.route) {
+            LinkDetailScreen(navHostController = navController)
         }
     }
 }

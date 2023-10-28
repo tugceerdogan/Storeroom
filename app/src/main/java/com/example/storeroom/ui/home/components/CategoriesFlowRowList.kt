@@ -18,10 +18,10 @@ private const val CHUNKED_ITEMS_COUNT = 2
 @Composable
 fun CategoriesFlowRowList(navHostController: NavHostController, list: List<String?>) {
 
-    val displayItems = if (list.size > MAX_DISPLAY_ITEMS_COUNT) {
-        list.take(MAX_DISPLAY_ITEMS_COUNT - 1) + CategoryItemType.SEE_MORE.value
+    val displayItems = if (list.distinct().size > MAX_DISPLAY_ITEMS_COUNT) {
+        list.distinct().take(MAX_DISPLAY_ITEMS_COUNT - 1) + CategoryItemType.SEE_MORE.value
     } else {
-        list
+        list.distinct()
     }
 
     val chunkedItems = displayItems.chunked(CHUNKED_ITEMS_COUNT)

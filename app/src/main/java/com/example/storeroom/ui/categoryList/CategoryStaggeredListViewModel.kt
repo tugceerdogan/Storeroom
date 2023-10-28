@@ -9,20 +9,20 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CategoryListViewModel @Inject constructor(
+class CategoryStaggeredListViewModel @Inject constructor(
     private val getLinkUseCase: GetLinkUseCase
 ) : ViewModel() {
 
     val categories = MutableStateFlow<List<String?>>(emptyList())
 
     init {
-        fetchCategoriesForUser()
+        fetchCategoriesForStaggeredList()
     }
 
-    fun fetchCategoriesForUser() {
+    fun fetchCategoriesForStaggeredList() {
         viewModelScope.launch {
-            val user = getLinkUseCase()
-            val categoryList = user.map { it.category }
+            val userLinkInfo = getLinkUseCase()
+            val categoryList = userLinkInfo.map { it.category }
             categories.value = categoryList
         }
     }

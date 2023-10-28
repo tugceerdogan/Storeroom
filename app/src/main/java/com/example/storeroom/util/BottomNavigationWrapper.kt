@@ -17,7 +17,7 @@ fun BottomNavigationWrapper(
     val scaffoldState = rememberScaffoldState()
 
     val isLoginPage = currentRoute == Screen.Login.route
-    val isDetailPage = currentRoute == Screen.CategoryDetail.route
+    val isDetailPage = currentRoute == Screen.CategoryDetail.ROUTE_TEMPLATE
 
     if (isLoginPage || isDetailPage) {
         content()
@@ -39,6 +39,5 @@ fun BottomNavigationWrapper(
                 BottomNavigation(navController)
             }
         }
-
     }
 }

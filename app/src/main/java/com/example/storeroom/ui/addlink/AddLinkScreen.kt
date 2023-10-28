@@ -1,12 +1,20 @@
 package com.example.storeroom.ui.addlink
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Snackbar
+import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -17,6 +25,7 @@ import com.example.storeroom.ui.loginregister.components.UserButton
 import com.example.storeroom.ui.loginregister.components.UserInputTextField
 import com.example.storeroom.util.BottomNavigationWrapper
 import com.example.storeroom.util.Screen
+import kotlinx.coroutines.delay
 
 @Composable
 fun AddLinkScreen(
@@ -31,11 +40,16 @@ fun AddLinkScreen(
     val textLinkValue = remember { mutableStateOf(TextFieldValue(userLinkInfo.url)) }
     val textCategoryValue = remember { mutableStateOf(TextFieldValue(userLinkInfo.category)) }
 
+    var showSnackbar = remember { mutableStateOf(false) }
+
+    val configuration = LocalConfiguration.current
+    val screenHeight = configuration.screenHeightDp
+
     BottomNavigationWrapper(navHostController) {
+        Spacer(modifier = Modifier.padding(top= (screenHeight/4).dp))
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .wrapContentSize(Alignment.Center)
         ) {
             Column(
                 modifier = Modifier
@@ -67,11 +81,36 @@ fun AddLinkScreen(
 
                 UserButton(
                     onClick = {
-                        addLinkScreenViewModel.addLinkToUser()
-                        navHostController.navigate(Screen.Home.route)
+                        if (textLinkValue.value.text.isBlank() || textCategoryValue.value.text.isBlank()) {
+                            showSnackbar.value = true
+                        } else {
+                            addLinkScreenViewModel.addLinkToUser()
+                            navHostController.navigate(Screen.Home.route)
+                        }
                     },
                     text = "Save"
                 )
+            }
+
+            if (showSnackbar.value) {
+                Snackbar(
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .padding(bottom = 64.dp)
+                        .background(Color(0xFF333333)),
+                    action = {
+                        TextButton(onClick = { showSnackbar.value = false }) {
+                            Text(text ="OK", color = Color(0xFFFFFFFF))
+                        }
+                    },
+                    shape = RoundedCornerShape(8.dp)
+                ) {
+                    Text("Please fill in the blank fields!")
+                }
+                LaunchedEffect(key1 = showSnackbar.value) {
+                    delay(3000L)
+                    showSnackbar.value = false
+                }
             }
         }
     }
