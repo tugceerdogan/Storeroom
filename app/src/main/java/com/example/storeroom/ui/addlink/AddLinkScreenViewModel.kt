@@ -40,4 +40,8 @@ class AddLinkScreenViewModel @Inject constructor(
     fun updateCategory(newCategory: String) {
         _userLinkInfo.value = _userLinkInfo.value.copy(category = newCategory)
     }
+
+    fun updateNote(newNote: String) {
+        _userLinkInfo.value = _userLinkInfo.value.copy(note = newNote)
+    }
 }

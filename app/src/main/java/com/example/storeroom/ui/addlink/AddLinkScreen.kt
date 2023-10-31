@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
+import com.example.storeroom.ui.addlink.components.DropdownTextField
 import com.example.storeroom.ui.loginregister.components.UserButton
 import com.example.storeroom.ui.loginregister.components.UserInputTextField
 import com.example.storeroom.util.BottomNavigationWrapper
@@ -39,6 +40,7 @@ fun AddLinkScreen(
 
     val textLinkValue = remember { mutableStateOf(TextFieldValue(userLinkInfo.url)) }
     val textCategoryValue = remember { mutableStateOf(TextFieldValue(userLinkInfo.category)) }
+    val textNoteValue = remember { mutableStateOf(TextFieldValue(userLinkInfo.note)) }
 
     var showSnackbar = remember { mutableStateOf(false) }
 
@@ -46,7 +48,7 @@ fun AddLinkScreen(
     val screenHeight = configuration.screenHeightDp
 
     BottomNavigationWrapper(navHostController) {
-        Spacer(modifier = Modifier.padding(top= (screenHeight/4).dp))
+        Spacer(modifier = Modifier.padding(top = (screenHeight / 4).dp))
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -54,7 +56,6 @@ fun AddLinkScreen(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)
             ) {
 
                 UserInputTextField(
@@ -66,14 +67,27 @@ fun AddLinkScreen(
                     }
                 )
 
-                Spacer(modifier = Modifier.height(15.dp))
+                Spacer(modifier = Modifier.height(30.dp))
 
+                DropdownTextField { selectedItem ->
+                    textCategoryValue.value = TextFieldValue(selectedItem)
+                    addLinkScreenViewModel.updateCategory(selectedItem)
+                }
+
+                Spacer(modifier = Modifier.height(30.dp))
+
+                Text(
+                    text = "Optional",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 32.dp)
+                )
                 UserInputTextField(
-                    value = textCategoryValue.value,
-                    label = "Enter Category",
+                    value = textNoteValue.value,
+                    label = "Enter Note",
                     onValueChange = {
-                        textCategoryValue.value = it
-                        addLinkScreenViewModel.updateCategory(it.text)
+                        textNoteValue.value = it
+                        addLinkScreenViewModel.updateNote(it.text)
                     },
                 )
 
@@ -100,7 +114,7 @@ fun AddLinkScreen(
                         .background(Color(0xFF333333)),
                     action = {
                         TextButton(onClick = { showSnackbar.value = false }) {
-                            Text(text ="OK", color = Color(0xFFFFFFFF))
+                            Text(text = "OK", color = Color(0xFFFFFFFF))
                         }
                     },
                     shape = RoundedCornerShape(8.dp)
