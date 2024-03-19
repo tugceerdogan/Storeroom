@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import com.example.storeroom.util.StoreroomTheme
+import com.example.storeroom.util.StoreroomColor
 
 @Composable
 fun UserLinkTextField(
@@ -24,7 +24,7 @@ fun UserLinkTextField(
         modifier = modifier
             .fillMaxWidth(),
         colors = TextFieldDefaults.outlinedTextFieldColors(
-            backgroundColor = StoreroomTheme.editTextBackgroundColor,
+            backgroundColor = StoreroomColor.storeRoomDarkWhite,
             textColor = Color.Black,
             focusedBorderColor = Color(0xFF928A9C),
             unfocusedBorderColor = Color(0xFFCCC9C9)

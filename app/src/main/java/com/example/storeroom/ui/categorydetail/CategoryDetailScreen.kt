@@ -25,7 +25,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.example.storeroom.ui.search.SearchBar
 import com.example.storeroom.util.Screen
-import com.example.storeroom.util.StoreroomTheme
+import com.example.storeroom.util.StoreroomColor
+import com.example.storeroom.util.StoreroomFont
 
 @Composable
 fun CategoryDetailScreen(
@@ -41,7 +42,7 @@ fun CategoryDetailScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(StoreroomTheme.veryLightGray)
+            .background(StoreroomColor.storeRoomGray)
             .fillMaxWidth(),
         verticalArrangement = Arrangement.Top,
     ) {
@@ -58,7 +59,7 @@ fun CategoryDetailScreen(
             style = MaterialTheme.typography.body2.copy(
                 color = Color.Black,
                 fontSize = 30.sp,
-                fontFamily = StoreroomTheme.customBoldFont
+                fontFamily = StoreroomFont.customBoldFont
             ),
             textAlign = TextAlign.End,
             modifier = Modifier.padding(start = 16.dp),
@@ -69,7 +70,7 @@ fun CategoryDetailScreen(
             style = MaterialTheme.typography.body2.copy(
                 color = Color.Black,
                 fontSize = 25.sp,
-                fontFamily = StoreroomTheme.customBoldFont
+                fontFamily = StoreroomFont.customBoldFont
             ),
             textAlign = TextAlign.Start,
             modifier = Modifier.padding(start = 16.dp)
@@ -113,9 +114,9 @@ fun LinkItem(item: String?, navHostController: NavHostController) {
                     .weight(1f)
                     .padding(top = 20.dp, bottom = 20.dp, start = 32.dp),
                 style = MaterialTheme.typography.body1.copy(
-                    color = StoreroomTheme.termAndPolicyClickableTextColor,
+                    color = StoreroomColor.storeRoomDarkBlue,
                     fontSize = 25.sp,
-                    fontFamily = StoreroomTheme.customBoldFont
+                    fontFamily = StoreroomFont.customBoldFont
                 ),
             )
             Icon(
@@ -123,7 +124,7 @@ fun LinkItem(item: String?, navHostController: NavHostController) {
                 contentDescription = "Redirect Button",
                 modifier = Modifier
                     .padding(top = 20.dp, bottom = 20.dp, end = 32.dp),
-                tint = StoreroomTheme.termAndPolicyClickableTextColor,
+                tint = StoreroomColor.storeRoomDarkBlue,
             )
         }
     }

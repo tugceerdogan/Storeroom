@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.storeroom.util.BottomNavigationWrapper
-import com.example.storeroom.util.StoreroomTheme
+import com.example.storeroom.util.StoreroomFont
 
 @Composable
 fun SearchScreen(navHostController: NavHostController) {
@@ -32,7 +32,8 @@ fun SearchScreen(navHostController: NavHostController) {
                     searchText.value = newText
                 },
                 navHostController = navHostController,
-                isSearchPage = true
+                isSearchPage = true,
+                backgroundColor = Color.Red
             )
             Spacer(modifier = Modifier.height(300.dp))
             Text(
@@ -40,7 +41,7 @@ fun SearchScreen(navHostController: NavHostController) {
                 style = MaterialTheme.typography.body1.copy(
                     color = Color.Black,
                     fontSize = 25.sp,
-                    fontFamily = StoreroomTheme.customBoldFont
+                    fontFamily = StoreroomFont.customBoldFont
                 ),
                 textAlign = TextAlign.Center,
             )

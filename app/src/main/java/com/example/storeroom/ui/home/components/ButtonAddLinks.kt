@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.storeroom.util.Screen
-import com.example.storeroom.util.StoreroomTheme
+import com.example.storeroom.util.StoreroomColor
 
 @Composable
 fun ButtonAddLinks(navHostController: NavHostController) {
@@ -21,7 +21,7 @@ fun ButtonAddLinks(navHostController: NavHostController) {
         .fillMaxWidth()
     ) {
         FloatingActionButton(
-            backgroundColor = StoreroomTheme.termAndPolicyClickableTextColor,
+            backgroundColor = StoreroomColor.storeRoomDarkBlue,
             onClick = { navHostController.navigate(Screen.Link.route) },
             modifier = Modifier
                 .align(Alignment.BottomEnd)

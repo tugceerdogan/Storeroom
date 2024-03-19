@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.example.storeroom.BuildConfig
 import com.example.storeroom.R
 import com.example.storeroom.ui.loginregister.login.LoginViewModel
-import com.example.storeroom.util.StoreroomTheme
+import com.example.storeroom.util.StoreroomColor
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 
@@ -58,7 +58,7 @@ fun GoogleSignInButton(
             val signInIntent = client.signInIntent
             signInLauncher.launch(signInIntent)
         },
-        colors = ButtonDefaults.buttonColors(backgroundColor = StoreroomTheme.storeRoomBlue),
+        colors = ButtonDefaults.buttonColors(backgroundColor = StoreroomColor.storeRoomBlue),
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 32.dp)

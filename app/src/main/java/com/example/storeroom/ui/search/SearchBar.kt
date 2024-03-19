@@ -30,7 +30,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.storeroom.util.Screen
-import com.example.storeroom.util.StoreroomTheme
+import com.example.storeroom.util.StoreroomColor
 
 @Composable
 fun SearchBar(
@@ -39,13 +39,14 @@ fun SearchBar(
     modifier: Modifier = Modifier,
     navHostController: NavHostController,
     isHomePage: Boolean = false,
-    isSearchPage: Boolean = false
+    isSearchPage: Boolean = false,
+    backgroundColor : Color =  Color.White
 ) {
     val focusRequester = remember { FocusRequester() }
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .background(color = Color.White)
+            .background(color = backgroundColor)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -58,7 +59,7 @@ fun SearchBar(
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
                     contentDescription = "Arrow Icon",
-                    tint = StoreroomTheme.termAndPolicyClickableTextColor,
+                    tint = StoreroomColor.storeRoomDarkBlue,
                     modifier = Modifier.clickable {
                         navHostController.popBackStack()
                     }
@@ -95,7 +96,7 @@ fun SearchBar(
             Icon(
                 imageVector = Icons.Default.Search,
                 contentDescription = "Search Icon",
-                tint = StoreroomTheme.termAndPolicyClickableTextColor
+                tint = StoreroomColor.storeRoomDarkBlue
             )
         }
     }

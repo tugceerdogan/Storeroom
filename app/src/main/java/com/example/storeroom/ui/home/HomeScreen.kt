@@ -19,7 +19,8 @@ import com.example.storeroom.ui.home.components.ButtonAddLinks
 import com.example.storeroom.ui.home.components.CategoriesFlowRowList
 import com.example.storeroom.ui.home.components.EmptyHomeScreen
 import com.example.storeroom.util.BottomNavigationWrapper
-import com.example.storeroom.util.StoreroomTheme
+import com.example.storeroom.util.StoreroomColor
+import com.example.storeroom.util.StoreroomFont
 
 @Composable
 fun HomeScreen(navHostController: NavHostController, viewModel: HomeViewModel = hiltViewModel()) {
@@ -52,8 +53,8 @@ fun HomeScreen(navHostController: NavHostController, viewModel: HomeViewModel = 
                     text = "STOREROOM",
                     style = MaterialTheme.typography.body1.copy(
                         fontSize = 40.sp,
-                        fontFamily = StoreroomTheme.customBoldFont,
-                        color = StoreroomTheme.termAndPolicyClickableTextColor,
+                        fontFamily = StoreroomFont.customBoldFont,
+                        color = StoreroomColor.storeRoomDarkBlue,
                     ),
                 )
                 Spacer(modifier = Modifier.height(1.dp))
@@ -61,7 +62,7 @@ fun HomeScreen(navHostController: NavHostController, viewModel: HomeViewModel = 
                     text = "Your Digital Archive..",
                     style = MaterialTheme.typography.body1.copy(
                         fontSize = 10.sp,
-                        color = StoreroomTheme.termAndPolicyClickableTextColor,
+                        color = StoreroomColor.storeRoomDarkBlue,
                     ),
                 )
                 Spacer(modifier = Modifier.height(15.dp))

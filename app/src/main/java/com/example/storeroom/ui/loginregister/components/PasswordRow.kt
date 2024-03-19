@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.storeroom.util.StoreroomTheme
+import com.example.storeroom.util.StoreroomColor
 
 @Composable
 fun PasswordRow() {
@@ -22,12 +22,12 @@ fun PasswordRow() {
         Checkbox(checked = false, onCheckedChange = { })
         Text(
             text = "Remember Password",
-            color = StoreroomTheme.rememberPasswordTextColor
+            color = StoreroomColor.storeRoomBrown
         )
         Text(
             text = "Forget Password",
             modifier = Modifier.padding(start = 58.dp),
-            color = StoreroomTheme.termAndPolicyClickableTextColor
+            color = StoreroomColor.storeRoomDarkBlue
         )
     }
 }

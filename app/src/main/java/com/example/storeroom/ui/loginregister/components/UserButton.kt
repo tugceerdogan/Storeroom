@@ -10,6 +10,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.storeroom.util.StoreroomColor
 import com.example.storeroom.util.StoreroomTheme
 
 @Composable
@@ -17,7 +18,7 @@ fun UserButton(onClick: () -> Unit, text: String) {
     Button(
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(
-            backgroundColor = StoreroomTheme.termAndPolicyClickableTextColor
+            backgroundColor = StoreroomColor.storeRoomDarkBlue
         ),
         modifier = Modifier
             .fillMaxWidth()

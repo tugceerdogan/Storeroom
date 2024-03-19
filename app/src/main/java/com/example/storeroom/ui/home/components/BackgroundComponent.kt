@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.example.storeroom.util.StoreroomTheme
+import com.example.storeroom.util.StoreroomColor
 
 @Composable
 fun BackgroundComponent() {
@@ -25,7 +25,7 @@ fun BackgroundComponent() {
                 .fillMaxWidth()
                 .height(200.dp)
                 .clip(RoundedCornerShape(bottomStart = 32.dp, bottomEnd = 32.dp))
-                .background(StoreroomTheme.storeRoomBlue),
+                .background(StoreroomColor.storeRoomBlue),
         )
     }
 }

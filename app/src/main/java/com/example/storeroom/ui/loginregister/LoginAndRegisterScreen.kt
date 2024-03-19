@@ -20,10 +20,10 @@ import androidx.navigation.NavHostController
 import com.example.storeroom.ui.loginregister.components.CustomDialog
 import com.example.storeroom.ui.loginregister.components.LoginTabScreen
 import com.example.storeroom.ui.loginregister.components.RegisterTabScreen
-import com.example.storeroom.util.StoreroomTheme.customBoldFont
-import com.example.storeroom.util.StoreroomTheme.termAndPolicyClickableTextColor
-import com.example.storeroom.util.StoreroomTheme.termAndPolicyTextColor
-import com.example.storeroom.util.StoreroomTheme.unselectTabColor
+import com.example.storeroom.util.StoreroomColor.storeRoomBrown
+import com.example.storeroom.util.StoreroomColor.storeRoomDarkBlue
+import com.example.storeroom.util.StoreroomColor.storeRoomDarkGray
+import com.example.storeroom.util.StoreroomFont.customBoldFont
 
 @Composable
 fun LoginAndRegisterScreen(
@@ -79,14 +79,14 @@ fun TermAndPolicyText(
     val annotatedText = buildAnnotatedString {
         withStyle(
             style = SpanStyle(
-                color = termAndPolicyTextColor,
+                color = storeRoomBrown,
             )
         ) {
             append(text)
         }
         withStyle(
             style = SpanStyle(
-                color = termAndPolicyClickableTextColor,
+                color = storeRoomDarkBlue,
                 textDecoration = TextDecoration.None,
             )
         ) {
@@ -125,7 +125,7 @@ fun LoginOrRegisterTabLayout(navHostController: NavHostController) {
             selectedTabIndex = selectedTabIndex,
             modifier = Modifier.padding(horizontal = 30.dp),
             backgroundColor = Color.White,
-            contentColor = unselectTabColor,
+            contentColor = storeRoomDarkGray,
             indicator = { tabPositions ->
                 TabRowDefaults.Indicator(
                     color = Color.Black,

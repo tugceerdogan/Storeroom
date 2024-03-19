@@ -23,7 +23,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.example.storeroom.ui.search.SearchBar
 import com.example.storeroom.util.Screen
-import com.example.storeroom.util.StoreroomTheme
+import com.example.storeroom.util.StoreroomColor
+import com.example.storeroom.util.StoreroomFont
 
 @Composable
 fun CategoryStaggeredListScreen(
@@ -37,7 +38,7 @@ fun CategoryStaggeredListScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(StoreroomTheme.veryLightGray)
+            .background(StoreroomColor.storeRoomGray)
             .fillMaxWidth(),
         verticalArrangement = Arrangement.Top,
     ) {
@@ -54,7 +55,7 @@ fun CategoryStaggeredListScreen(
             style = MaterialTheme.typography.body2.copy(
                 color = Color.Black,
                 fontSize = 25.sp,
-                fontFamily = StoreroomTheme.customBoldFont
+                fontFamily = StoreroomFont.customBoldFont
             ),
             textAlign = TextAlign.Start,
             modifier = Modifier.padding(start = 16.dp)
@@ -102,9 +103,9 @@ fun CategoryItem(item: String?, navHostController: NavHostController) {
                 text = item ?: "",
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.body1.copy(
-                    color = StoreroomTheme.termAndPolicyClickableTextColor,
+                    color = StoreroomColor.storeRoomDarkBlue,
                     fontSize = 25.sp,
-                    fontFamily = StoreroomTheme.customBoldFont
+                    fontFamily = StoreroomFont.customBoldFont
                 ),
             )
         }

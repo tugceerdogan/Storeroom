@@ -16,7 +16,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import com.example.storeroom.util.StoreroomTheme
+import com.example.storeroom.util.StoreroomColor
 
 @Composable
 fun UserPasswordInputField(
@@ -36,7 +36,7 @@ fun UserPasswordInputField(
             .fillMaxWidth()
             .padding(horizontal = 32.dp),
         colors = TextFieldDefaults.outlinedTextFieldColors(
-            backgroundColor = StoreroomTheme.editTextBackgroundColor,
+            backgroundColor = StoreroomColor.storeRoomDarkWhite,
             textColor = Color.Black,
             focusedBorderColor = Color(0xFF928A9C),
             unfocusedBorderColor = Color(0xFFCCC9C9)

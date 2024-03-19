@@ -15,7 +15,7 @@ import androidx.navigation.NavHostController
 import com.example.storeroom.util.Screen
 import com.example.storeroom.ui.loginregister.login.LoginViewModel
 import com.example.storeroom.util.CustomLoading
-import com.example.storeroom.util.StoreroomTheme
+import com.example.storeroom.util.StoreroomColor
 import com.example.storeroom.util.UIState
 import kotlinx.coroutines.launch
 
@@ -81,7 +81,7 @@ fun LoginTabScreen(
 
         Text(
             text = "or connect with",
-            color = StoreroomTheme.rememberPasswordTextColor,
+            color = StoreroomColor.storeRoomBrown,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(25.dp),

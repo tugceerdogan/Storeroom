@@ -22,6 +22,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.storeroom.util.CategoryItemType
+import com.example.storeroom.util.StoreroomFont
 import com.example.storeroom.util.StoreroomTheme
 
 @Composable
@@ -51,7 +52,7 @@ fun ClickableCard(item: String?, onClick: () -> Unit) {
                     style = MaterialTheme.typography.body1.copy(
                         color = Color.Black,
                         fontSize = 25.sp,
-                        fontFamily = StoreroomTheme.customBoldFont
+                        fontFamily = StoreroomFont.customBoldFont
                     ),
                     textAlign = TextAlign.Center,
                     maxLines = 2
