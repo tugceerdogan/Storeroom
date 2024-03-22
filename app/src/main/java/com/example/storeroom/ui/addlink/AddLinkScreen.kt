@@ -39,6 +39,8 @@ fun AddLinkScreen(
     val addLinkResult by addLinkScreenViewModel.addLinkResult.collectAsStateWithLifecycle()
 
     val textLinkValue = remember { mutableStateOf(TextFieldValue(userLinkInfo.url)) }
+    val linkError = remember { mutableStateOf("") }
+
     val textCategoryValue = remember { mutableStateOf(TextFieldValue(userLinkInfo.category)) }
     val textNoteValue = remember { mutableStateOf(TextFieldValue(userLinkInfo.note)) }
 
@@ -66,6 +68,13 @@ fun AddLinkScreen(
                         addLinkScreenViewModel.updateUrl(it.text)
                     }
                 )
+                if (linkError.value.isNotEmpty()) {
+                    Text(
+                        text = linkError.value,
+                        color = Color.Red,
+                        modifier = Modifier.padding(start = 32.dp, top = 4.dp)
+                    )
+                }
 
                 Spacer(modifier = Modifier.height(30.dp))
 
@@ -97,7 +106,10 @@ fun AddLinkScreen(
                     onClick = {
                         if (textLinkValue.value.text.isBlank() || textCategoryValue.value.text.isBlank()) {
                             showSnackbar.value = true
+                        } else if (!addLinkScreenViewModel.isValidLink(textLinkValue.value.text)) {
+                            linkError.value = "Girilen link formata uygun değil!"
                         } else {
+                            linkError.value = ""
                             addLinkScreenViewModel.addLinkToUser()
                             navHostController.navigate(Screen.Home.route)
                         }

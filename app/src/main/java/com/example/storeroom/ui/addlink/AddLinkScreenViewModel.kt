@@ -1,5 +1,6 @@
 package com.example.storeroom.ui.addlink
 
+import android.util.Patterns
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.storeroom.data.link.UserLinkInfo
@@ -43,5 +44,10 @@ class AddLinkScreenViewModel @Inject constructor(
 
     fun updateNote(newNote: String) {
         _userLinkInfo.value = _userLinkInfo.value.copy(note = newNote)
+    }
+
+    fun isValidLink(link: String): Boolean {
+        val pattern = Patterns.WEB_URL
+        return pattern.matcher(link).matches()
     }
 }
