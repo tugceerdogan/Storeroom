@@ -46,6 +46,8 @@ fun AddLinkScreen(
 
     var showSnackbar = remember { mutableStateOf(false) }
 
+    val categories = addLinkScreenViewModel.categories.collectAsStateWithLifecycle()
+
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp
 
@@ -78,10 +80,12 @@ fun AddLinkScreen(
 
                 Spacer(modifier = Modifier.height(30.dp))
 
-                DropdownTextField { selectedItem ->
-                    textCategoryValue.value = TextFieldValue(selectedItem)
-                    addLinkScreenViewModel.updateCategory(selectedItem)
-                }
+                DropdownTextField(
+                    items = categories.value,
+                    onItemSelected = { selectedItem ->
+                        textCategoryValue.value = TextFieldValue(selectedItem.orEmpty())
+                        addLinkScreenViewModel.updateCategory(selectedItem.orEmpty())
+                    })
 
                 Spacer(modifier = Modifier.height(30.dp))
 

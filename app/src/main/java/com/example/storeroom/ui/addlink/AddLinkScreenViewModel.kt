@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.storeroom.data.link.UserLinkInfo
 import com.example.storeroom.domain.link.AddLinkUseCase
+import com.example.storeroom.domain.link.GetLinkUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,7 +14,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddLinkScreenViewModel @Inject constructor(
-    private val addLinkUseCase: AddLinkUseCase
+    private val addLinkUseCase: AddLinkUseCase,
+    private val getLinkUseCase: GetLinkUseCase,
 ) : ViewModel() {
 
     private val _userLinkInfo = MutableStateFlow(UserLinkInfo())
@@ -21,6 +23,12 @@ class AddLinkScreenViewModel @Inject constructor(
 
     private val _addLinkResult = MutableStateFlow(Result.success(Unit))
     val addLinkResult: StateFlow<Result<Unit>> = _addLinkResult
+
+    val categories = MutableStateFlow<List<String?>>(emptyList())
+
+    init {
+        fetchCategories()
+    }
 
     fun addLinkToUser() {
         viewModelScope.launch {
@@ -49,5 +57,14 @@ class AddLinkScreenViewModel @Inject constructor(
     fun isValidLink(link: String): Boolean {
         val pattern = Patterns.WEB_URL
         return pattern.matcher(link).matches()
+    }
+
+    private fun fetchCategories() {
+        viewModelScope.launch {
+            val categoryList = getLinkUseCase().map {
+                it.category
+            }
+            categories.value = categoryList
+        }
     }
 }

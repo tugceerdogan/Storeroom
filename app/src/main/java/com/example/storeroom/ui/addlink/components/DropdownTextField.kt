@@ -3,20 +3,25 @@ package com.example.storeroom.ui.addlink.components
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -28,13 +33,16 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.example.storeroom.util.StoreroomColor
 
+const val ADD_CATEGORY = "Add Category"
 @Composable
 fun DropdownTextField(
-    onItemSelected: (String) -> Unit
+    onItemSelected: (String?) -> Unit,
+    items: List<String?>,
 ) {
     var expanded by remember { mutableStateOf(false) }
-    val items = listOf("Enter Category", "B", "C", "D", "E", "F")
-    var selectedIndex by remember { mutableStateOf(0) }
+    var selectedIndex by remember { mutableIntStateOf(-1) }
+    val updatedItems = listOf(ADD_CATEGORY) + items.filterNotNull()
+
     Column(
         modifier = Modifier.padding(horizontal = 32.dp)
     ) {
@@ -55,7 +63,7 @@ fun DropdownTextField(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = items[selectedIndex],
+                    text = if (selectedIndex in updatedItems.indices) updatedItems[selectedIndex] else "Select a category",
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(start = 16.dp),
@@ -69,14 +77,22 @@ fun DropdownTextField(
                     .fillMaxWidth(fraction = 0.98f)
                     .background(StoreroomColor.storeRoomDarkWhite)
             ) {
-                items.forEachIndexed { index, string ->
+                updatedItems.forEachIndexed { index, string ->
                     DropdownMenuItem(
                         onClick = {
                             selectedIndex = index
                             expanded = false
                             onItemSelected(string)
                         }) {
-                        Text(text = string)
+                        if (string == ADD_CATEGORY) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Icon(Icons.Default.Add, contentDescription = null)
+                                Spacer(Modifier.width(8.dp))
+                                Text(text = string)
+                            }
+                        } else {
+                            Text(text = string)
+                        }
                     }
                 }
             }
