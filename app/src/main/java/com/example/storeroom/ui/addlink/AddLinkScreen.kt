@@ -85,6 +85,9 @@ fun AddLinkScreen(
                     onItemSelected = { selectedItem ->
                         textCategoryValue.value = TextFieldValue(selectedItem.orEmpty())
                         addLinkScreenViewModel.updateCategory(selectedItem.orEmpty())
+                    },
+                    onAddCategoryClicked = {
+                        navHostController.navigate(Screen.CreateCategory.route)
                     })
 
                 Spacer(modifier = Modifier.height(30.dp))

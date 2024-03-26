@@ -29,14 +29,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.example.storeroom.util.StoreroomColor
 
 const val ADD_CATEGORY = "Add Category"
+
 @Composable
 fun DropdownTextField(
     onItemSelected: (String?) -> Unit,
+    onAddCategoryClicked: () -> Unit,
     items: List<String?>,
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -80,9 +81,13 @@ fun DropdownTextField(
                 updatedItems.forEachIndexed { index, string ->
                     DropdownMenuItem(
                         onClick = {
-                            selectedIndex = index
-                            expanded = false
-                            onItemSelected(string)
+                            if (string == ADD_CATEGORY) {
+                                onAddCategoryClicked()
+                            } else {
+                                selectedIndex = index
+                                expanded = false
+                                onItemSelected(string)
+                            }
                         }) {
                         if (string == ADD_CATEGORY) {
                             Row(verticalAlignment = Alignment.CenterVertically) {
