@@ -23,4 +23,5 @@ sealed class Screen(val route: String, val title: String? = null, val icon: Imag
     object Link : Screen("link")
     object Search : Screen("search", "Search", Icons.Filled.Search)
     object Profile : Screen("profile", "Profile", Icons.Filled.Person)
+    object CreateCategory: Screen("createcategory", "CreateCategory")
 }

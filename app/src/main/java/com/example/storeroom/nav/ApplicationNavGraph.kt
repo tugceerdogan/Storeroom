@@ -9,6 +9,7 @@ import com.example.storeroom.ui.loginregister.LoginAndRegisterScreen
 import com.example.storeroom.ui.categorydetail.CategoryDetailScreen
 import com.example.storeroom.ui.addlink.AddLinkScreen
 import com.example.storeroom.ui.categoryList.CategoryStaggeredListScreen
+import com.example.storeroom.ui.createcategory.CreateCategoryScreen
 import com.example.storeroom.ui.favorite.FavoriteScreen
 import com.example.storeroom.ui.linkdetail.LinkDetailScreen
 import com.example.storeroom.ui.profile.ProfileScreen
@@ -50,6 +51,9 @@ fun ApplicationNavGraph() {
         }
         composable(Screen.LinkDetail.route) {
             LinkDetailScreen(navHostController = navController)
+        }
+        composable(Screen.CreateCategory.route){
+            CreateCategoryScreen(navHostController = navController)
         }
     }
 }
