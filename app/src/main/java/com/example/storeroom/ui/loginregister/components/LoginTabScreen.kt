@@ -53,7 +53,8 @@ fun LoginTabScreen(
             onValueChange = { newValue ->
                 userEmailField.value = newValue
                 loginViewModel.updateUserEmail(newValue.text)
-            }
+            },
+            modifier = Modifier.padding(horizontal = 32.dp)
         )
 
         Spacer(modifier = Modifier.height(10.dp))
@@ -76,7 +77,8 @@ fun LoginTabScreen(
             text = "Login",
             onClick = {
                 loginViewModel.loginUser()
-            }
+            },
+            modifier = Modifier.padding(horizontal = 32.dp).height(60.dp)
         )
 
         Text(

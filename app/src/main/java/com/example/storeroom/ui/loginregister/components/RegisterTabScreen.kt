@@ -73,7 +73,8 @@ fun RegisterTabScreen(
             onValueChange = { newValue ->
                 userEmailField.value = newValue
                 registerViewModel.updateUserEmail(newValue.text)
-            }
+            },
+            modifier = Modifier.padding(horizontal = 32.dp)
         )
 
         Spacer(modifier = Modifier.height(10.dp))
@@ -93,7 +94,8 @@ fun RegisterTabScreen(
             onClick = {
                 registerViewModel.registerUser()
             },
-            text = "Register"
+            text = "Register",
+            modifier = Modifier.padding(horizontal = 32.dp).height(60.dp)
         )
     }
 }

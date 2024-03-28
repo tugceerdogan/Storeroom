@@ -26,8 +26,7 @@ fun UserInputTextField(
         onValueChange = onValueChange,
         label = { Text(text = label, color = Color(0xFF928A9C)) },
         modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = 32.dp),
+            .fillMaxWidth(),
         colors = TextFieldDefaults.outlinedTextFieldColors(
             backgroundColor = StoreroomColor.storeRoomDarkWhite,
             textColor = Color.Black,
