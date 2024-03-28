@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.storeroom.ui.addlink.components.DropdownTextField
 import com.example.storeroom.ui.loginregister.components.UserButton
 import com.example.storeroom.ui.loginregister.components.UserInputTextField
@@ -31,7 +32,8 @@ import kotlinx.coroutines.delay
 @Composable
 fun AddLinkScreen(
     navHostController: NavHostController,
-    addLinkScreenViewModel: AddLinkScreenViewModel = hiltViewModel()
+    addLinkScreenViewModel: AddLinkScreenViewModel = hiltViewModel(),
+    categoryName: String?
 ) {
 
     val userLinkInfo by addLinkScreenViewModel.userLinkInfo.collectAsStateWithLifecycle()
@@ -68,7 +70,8 @@ fun AddLinkScreen(
                     onValueChange = {
                         textLinkValue.value = it
                         addLinkScreenViewModel.updateUrl(it.text)
-                    }
+                    },
+                    modifier = Modifier.padding(horizontal = 32.dp)
                 )
                 if (linkError.value.isNotEmpty()) {
                     Text(
@@ -88,7 +91,9 @@ fun AddLinkScreen(
                     },
                     onAddCategoryClicked = {
                         navHostController.navigate(Screen.CreateCategory.route)
-                    })
+                    },
+                    categoryName = categoryName
+                )
 
                 Spacer(modifier = Modifier.height(30.dp))
 
@@ -105,6 +110,7 @@ fun AddLinkScreen(
                         textNoteValue.value = it
                         addLinkScreenViewModel.updateNote(it.text)
                     },
+                    modifier = Modifier.padding(horizontal = 32.dp)
                 )
 
                 Spacer(modifier = Modifier.height(30.dp))
@@ -121,7 +127,10 @@ fun AddLinkScreen(
                             navHostController.navigate(Screen.Home.route)
                         }
                     },
-                    text = "Save"
+                    text = "Save",
+                    modifier = Modifier
+                        .padding(horizontal = 32.dp)
+                        .height(60.dp)
                 )
             }
 
@@ -149,8 +158,9 @@ fun AddLinkScreen(
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
-fun PreviewLinkScreen() {
-    /*    AddLinkScreen()*/
+fun AddLinkScreen() {
+    val navHostController = rememberNavController()
+    AddLinkScreen(navHostController, categoryName = "")
 }

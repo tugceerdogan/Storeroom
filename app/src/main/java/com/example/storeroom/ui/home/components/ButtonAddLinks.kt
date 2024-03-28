@@ -22,7 +22,10 @@ fun ButtonAddLinks(navHostController: NavHostController) {
     ) {
         FloatingActionButton(
             backgroundColor = StoreroomColor.storeRoomDarkBlue,
-            onClick = { navHostController.navigate(Screen.Link.route) },
+            onClick = {
+                val route = Screen.Link().route
+                navHostController.navigate(route)
+                },
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(32.dp)

@@ -20,7 +20,12 @@ sealed class Screen(val route: String, val title: String? = null, val icon: Imag
     }
     object LinkDetail : Screen("linkDetail")
     object CategoryList : Screen("categoryList")
-    object Link : Screen("link")
+    data class Link(val categoryName: String? = null) : Screen("link/$categoryName") {
+        companion object {
+            const val ROUTE_TEMPLATE = "link/{categoryName}"
+            const val ARG_CATEGORY_NAME = "categoryName"
+        }
+    }
     object Search : Screen("search", "Search", Icons.Filled.Search)
     object Profile : Screen("profile", "Profile", Icons.Filled.Person)
     object CreateCategory: Screen("createcategory", "CreateCategory")

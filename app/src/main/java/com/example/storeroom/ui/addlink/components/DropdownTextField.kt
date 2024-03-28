@@ -39,6 +39,7 @@ fun DropdownTextField(
     onItemSelected: (String?) -> Unit,
     onAddCategoryClicked: () -> Unit,
     items: List<String?>,
+    categoryName: String?,
 ) {
     var expanded by remember { mutableStateOf(false) }
     var selectedIndex by remember { mutableIntStateOf(-1) }
@@ -64,7 +65,10 @@ fun DropdownTextField(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = if (selectedIndex in updatedItems.indices) updatedItems[selectedIndex] else "Select a category",
+                    text =
+                    if(categoryName.orEmpty().isNotEmpty()) categoryName.orEmpty()
+                    else if (selectedIndex in updatedItems.indices) updatedItems[selectedIndex]
+                    else "Select a category",
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(start = 16.dp),

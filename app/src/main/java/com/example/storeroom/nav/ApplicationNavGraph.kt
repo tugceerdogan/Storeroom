@@ -34,7 +34,8 @@ fun ApplicationNavGraph() {
             CategoryStaggeredListScreen(navHostController = navController)
         }
         composable(Screen.CategoryDetail.ROUTE_TEMPLATE) { backStackEntry ->
-            val categoryName = backStackEntry.arguments?.getString(Screen.CategoryDetail.ARG_CATEGORY_NAME)
+            val categoryName =
+                backStackEntry.arguments?.getString(Screen.CategoryDetail.ARG_CATEGORY_NAME)
             CategoryDetailScreen(navHostController = navController, categoryName = categoryName)
         }
         composable(Screen.Search.route) {
@@ -43,8 +44,9 @@ fun ApplicationNavGraph() {
         composable(Screen.Profile.route) {
             ProfileScreen(navHostController = navController)
         }
-        composable(Screen.Link.route) {
-            AddLinkScreen(navHostController = navController)
+        composable(Screen.Link.ROUTE_TEMPLATE) { backStackEntry ->
+            val categoryName = backStackEntry.arguments?.getString(Screen.Link.ARG_CATEGORY_NAME)
+            AddLinkScreen(navHostController = navController, categoryName = categoryName)
         }
         composable(Screen.Favorite.route) {
             FavoriteScreen(navHostController = navController)
@@ -52,7 +54,7 @@ fun ApplicationNavGraph() {
         composable(Screen.LinkDetail.route) {
             LinkDetailScreen(navHostController = navController)
         }
-        composable(Screen.CreateCategory.route){
+        composable(Screen.CreateCategory.route) {
             CreateCategoryScreen(navHostController = navController)
         }
     }
