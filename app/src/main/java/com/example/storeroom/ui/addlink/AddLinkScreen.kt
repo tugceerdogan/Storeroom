@@ -86,13 +86,14 @@ fun AddLinkScreen(
                 DropdownTextField(
                     items = categories.value,
                     onItemSelected = { selectedItem ->
-                        textCategoryValue.value = TextFieldValue(selectedItem.orEmpty())
                         addLinkScreenViewModel.updateCategory(selectedItem.orEmpty())
+                        textCategoryValue.value = TextFieldValue(selectedItem.orEmpty())
                     },
                     onAddCategoryClicked = {
                         navHostController.navigate(Screen.CreateCategory.route)
                     },
-                    categoryName = categoryName
+                    categoryName =
+                    textCategoryValue.value.text.ifEmpty { categoryName }
                 )
 
                 Spacer(modifier = Modifier.height(30.dp))
@@ -120,7 +121,7 @@ fun AddLinkScreen(
                         if (textLinkValue.value.text.isBlank() || textCategoryValue.value.text.isBlank()) {
                             showSnackbar.value = true
                         } else if (!addLinkScreenViewModel.isValidLink(textLinkValue.value.text)) {
-                            linkError.value = "Girilen link formata uygun değil!"
+                            linkError.value = "Does not match the link format!"
                         } else {
                             linkError.value = ""
                             addLinkScreenViewModel.addLinkToUser()

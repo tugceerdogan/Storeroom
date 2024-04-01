@@ -28,11 +28,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import com.example.storeroom.util.StoreroomColor
@@ -47,20 +47,23 @@ fun DropdownTextField(
     categoryName: String?,
 ) {
     var expanded by remember { mutableStateOf(false) }
-    var selectedIndex by remember { mutableIntStateOf(-1) }
+    var selectedIndex by remember { mutableIntStateOf(0) }
     val updatedItems = listOf(ADD_CATEGORY) + items.filterNotNull()
     var rowSize by remember { mutableStateOf(Size.Zero) }
 
     Column(
         modifier = Modifier.padding(horizontal = 32.dp)
     ) {
+        val borderColor =
+            if (expanded) BorderStroke(2.dp, Color(0xFF928A9C))
+            else BorderStroke(0.5.dp, Color(0xFFCCC9C9))
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(56.dp)
-                .background(StoreroomColor.storeRoomDarkWhite),
-            border = BorderStroke(0.5.dp, Color(0xFFCCC9C9)),
+                .height(56.dp),
+            border = borderColor,
             shape = RoundedCornerShape(16.dp),
+            backgroundColor = StoreroomColor.storeRoomDarkWhite,
         ) {
             Row(
                 modifier = Modifier
@@ -72,15 +75,16 @@ fun DropdownTextField(
                     .background(StoreroomColor.storeRoomDarkWhite),
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                val hasCategory = categoryName.orEmpty().isNotEmpty()
                 Text(
                     text =
-                    if(categoryName.orEmpty().isNotEmpty()) categoryName.orEmpty()
+                    if (categoryName.orEmpty().isNotEmpty()) categoryName.orEmpty()
                     else if (selectedIndex in updatedItems.indices) updatedItems[selectedIndex]
                     else "Select a category",
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(start = 16.dp),
-                    color = Color(0xFF928A9C)
+                    color = if (hasCategory) Color.Black else Color(0xFF928A9C)
                 )
             }
             DropdownMenu(
@@ -116,4 +120,15 @@ fun DropdownTextField(
             }
         }
     }
+}
+
+@Preview
+@Composable
+fun DropdownTextFieldPreview() {
+    DropdownTextField(
+        items = listOf("A", "B", "C", "D"),
+        onItemSelected = {},
+        onAddCategoryClicked = {},
+        categoryName = "categoryName"
+    )
 }
