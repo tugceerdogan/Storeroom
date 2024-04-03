@@ -27,11 +27,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
@@ -39,6 +41,7 @@ import com.example.storeroom.util.StoreroomColor
 
 const val ADD_CATEGORY = "Add Category"
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun DropdownTextField(
     onItemSelected: (String?) -> Unit,
@@ -49,7 +52,10 @@ fun DropdownTextField(
     var expanded by remember { mutableStateOf(false) }
     var selectedIndex by remember { mutableIntStateOf(0) }
     val updatedItems = listOf(ADD_CATEGORY) + items.filterNotNull()
+
     var rowSize by remember { mutableStateOf(Size.Zero) }
+
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     Column(
         modifier = Modifier.padding(horizontal = 32.dp)
@@ -71,7 +77,11 @@ fun DropdownTextField(
                         rowSize = layoutCoordinates.size.toSize()
                     }
                     .fillMaxSize()
-                    .clickable(onClick = { expanded = true })
+                    .clickable(onClick = {
+                        keyboardController?.hide()
+                        expanded = !expanded
+                    }
+                    )
                     .background(StoreroomColor.storeRoomDarkWhite),
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -102,10 +112,11 @@ fun DropdownTextField(
                                 onAddCategoryClicked()
                             } else {
                                 selectedIndex = index
-                                expanded = false
                                 onItemSelected(string)
                             }
-                        }) {
+                            expanded = false
+                        }
+                    ) {
                         if (string == ADD_CATEGORY) {
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Icon(Icons.Default.Add, contentDescription = null)
