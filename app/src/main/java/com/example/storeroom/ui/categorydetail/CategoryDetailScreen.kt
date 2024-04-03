@@ -51,7 +51,8 @@ fun CategoryDetailScreen(
             onValueChange = { newText ->
                 searchText.value = newText
             },
-            navHostController = navHostController
+            navHostController = navHostController,
+            backgroundColor = StoreroomColor.storeRoomGray
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(

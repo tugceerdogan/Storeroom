@@ -9,4 +9,5 @@ object StoreroomColor {
     val storeRoomDarkBlue = Color(0xFF0386D0)
     val storeRoomGray = Color(0xF0F0F0C)
     val storeRoomDarkGray = Color(0xFFA6A6A6)
+    val storeRoomAddLinkButtonColor = Color(0xFF4D6C7E)
 }
