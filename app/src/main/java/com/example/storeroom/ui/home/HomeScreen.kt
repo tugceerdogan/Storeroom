@@ -14,13 +14,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.example.storeroom.ui.addlink.AddLinkScreen
+import com.example.storeroom.ui.createcategory.CreateCategoryScreen
+import com.example.storeroom.ui.home.components.AddLinkBottomSheetAnimatedVisibility
 import com.example.storeroom.ui.search.SearchBar
 import com.example.storeroom.ui.home.components.BackgroundComponent
 import com.example.storeroom.ui.home.components.ButtonAddLinks
@@ -41,13 +42,26 @@ fun HomeScreen(navHostController: NavHostController, viewModel: HomeViewModel = 
         rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val coroutineScope = rememberCoroutineScope()
 
+    val showCreateCategoryScreen = remember { mutableStateOf(false) }
+    val categoryName = remember { mutableStateOf("") }
+
     val sheetContent: @Composable ColumnScope.() -> Unit = {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .heightIn(max = 470.dp)
+        AddLinkBottomSheetAnimatedVisibility(
+            visible = !showCreateCategoryScreen.value
         ) {
-            AddLinkScreen(navHostController = navHostController, categoryName = "")
+            AddLinkScreen(
+                navHostController = navHostController,
+                categoryName = categoryName,
+                onAddCategoryClicked = { showCreateCategoryScreen.value = true }
+            )
+        }
+        AddLinkBottomSheetAnimatedVisibility(
+            visible = showCreateCategoryScreen.value
+        ) {
+            CreateCategoryScreen(
+                categoryName = categoryName,
+                onBackClicked = { showCreateCategoryScreen.value = false }
+            )
         }
     }
 
@@ -109,4 +123,3 @@ fun HomeScreen(navHostController: NavHostController, viewModel: HomeViewModel = 
         }
     }
 }
-
