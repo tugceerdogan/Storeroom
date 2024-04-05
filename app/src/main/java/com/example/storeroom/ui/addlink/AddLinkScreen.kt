@@ -9,13 +9,13 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,7 +28,6 @@ import androidx.navigation.compose.rememberNavController
 import com.example.storeroom.ui.addlink.components.DropdownTextField
 import com.example.storeroom.ui.loginregister.components.UserButton
 import com.example.storeroom.ui.loginregister.components.UserInputTextField
-import com.example.storeroom.util.BottomNavigationWrapper
 import com.example.storeroom.util.Screen
 import com.example.storeroom.util.StoreroomColor
 import kotlinx.coroutines.delay
@@ -37,12 +36,11 @@ import kotlinx.coroutines.delay
 fun AddLinkScreen(
     navHostController: NavHostController,
     addLinkScreenViewModel: AddLinkScreenViewModel = hiltViewModel(),
-    categoryName: String?
+    categoryName: MutableState<String>?,
+    onAddCategoryClicked: () -> Unit
 ) {
 
     val userLinkInfo by addLinkScreenViewModel.userLinkInfo.collectAsStateWithLifecycle()
-
-    val addLinkResult by addLinkScreenViewModel.addLinkResult.collectAsStateWithLifecycle()
 
     val textLinkValue = remember { mutableStateOf(TextFieldValue(userLinkInfo.url)) }
     val linkError = remember { mutableStateOf("") }
@@ -54,10 +52,11 @@ fun AddLinkScreen(
 
     val categories = addLinkScreenViewModel.categories.collectAsStateWithLifecycle()
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
+                .padding(bottom = 20.dp)
         ) {
             Text(
                 text = "Add Link",
@@ -80,13 +79,13 @@ fun AddLinkScreen(
                     textLinkValue.value = it
                     addLinkScreenViewModel.updateUrl(it.text)
                 },
-                modifier = Modifier.padding(horizontal = 32.dp)
+                modifier = Modifier.padding(horizontal = 20.dp)
             )
             if (linkError.value.isNotEmpty()) {
                 Text(
                     text = linkError.value,
                     color = Color.Red,
-                    modifier = Modifier.padding(start = 32.dp, top = 4.dp)
+                    modifier = Modifier.padding(start = 16.dp, top = 4.dp)
                 )
             }
             Spacer(modifier = Modifier.height(20.dp))
@@ -94,20 +93,18 @@ fun AddLinkScreen(
                 items = categories.value,
                 onItemSelected = { selectedItem ->
                     addLinkScreenViewModel.updateCategory(selectedItem.orEmpty())
+                    categoryName?.value = selectedItem.orEmpty()
                     textCategoryValue.value = TextFieldValue(selectedItem.orEmpty())
                 },
-                onAddCategoryClicked = {
-                    navHostController.navigate(Screen.CreateCategory.route)
-                },
-                categoryName =
-                textCategoryValue.value.text.ifEmpty { categoryName },
+                onAddCategoryClicked = onAddCategoryClicked,
+                categoryName = categoryName?.value,
             )
             Spacer(modifier = Modifier.height(25.dp))
             Text(
                 text = "Optional",
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 32.dp)
+                    .padding(start = 20.dp)
             )
             UserInputTextField(
                 value = textNoteValue.value,
@@ -116,7 +113,7 @@ fun AddLinkScreen(
                     textNoteValue.value = it
                     addLinkScreenViewModel.updateNote(it.text)
                 },
-                modifier = Modifier.padding(horizontal = 32.dp)
+                modifier = Modifier.padding(horizontal = 20.dp)
             )
             Spacer(modifier = Modifier.height(30.dp))
             UserButton(
@@ -133,8 +130,7 @@ fun AddLinkScreen(
                 },
                 text = "Save",
                 modifier = Modifier
-                    .padding(horizontal = 32.dp)
-                    .height(50.dp),
+                    .padding(horizontal = 20.dp, vertical = 20.dp),
                 color = Color(0xFF6C97B0)
             )
         }
@@ -166,5 +162,5 @@ fun AddLinkScreen(
 @Composable
 fun PreviewAddLinkScreen() {
     val navHostController = rememberNavController()
-    AddLinkScreen(navHostController, categoryName = "")
+    AddLinkScreen(navHostController, categoryName = null, onAddCategoryClicked = {  } )
 }

@@ -58,7 +58,7 @@ fun DropdownTextField(
     val keyboardController = LocalSoftwareKeyboardController.current
 
     Column(
-        modifier = Modifier.padding(horizontal = 32.dp)
+        modifier = Modifier.padding(horizontal = 20.dp)
     ) {
         val borderColor =
             if (expanded) BorderStroke(2.dp, Color(0xFF928A9C))
@@ -85,24 +85,23 @@ fun DropdownTextField(
                     .background(StoreroomColor.storeRoomDarkWhite),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                val hasCategory = categoryName.orEmpty().isNotEmpty()
-                Text(
-                    text =
-                    if (categoryName.orEmpty().isNotEmpty()) categoryName.orEmpty()
-                    else if (selectedIndex in updatedItems.indices) updatedItems[selectedIndex]
-                    else "Select a category",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 16.dp),
-                    color = if (hasCategory) Color.Black else Color(0xFF928A9C)
-                )
+                if (categoryName != null) {
+                    Text(
+                        text = categoryName.ifEmpty { "Select a category" },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 16.dp),
+                        color = if (categoryName.isEmpty()) Color(0xFF928A9C) else Color.Black
+
+                    )
+                }
             }
             DropdownMenu(
                 expanded = expanded,
                 onDismissRequest = { expanded = false },
                 modifier = Modifier
                     .width(with(LocalDensity.current) { rowSize.width.toDp() })
-                    .heightIn(max = 300.dp)
+                    .heightIn(max = 200.dp)
                     .background(StoreroomColor.storeRoomDarkWhite)
             ) {
                 updatedItems.forEachIndexed { index, string ->

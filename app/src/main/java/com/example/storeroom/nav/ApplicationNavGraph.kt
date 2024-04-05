@@ -7,9 +7,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.storeroom.ui.home.HomeScreen
 import com.example.storeroom.ui.loginregister.LoginAndRegisterScreen
 import com.example.storeroom.ui.categorydetail.CategoryDetailScreen
-import com.example.storeroom.ui.addlink.AddLinkScreen
 import com.example.storeroom.ui.categoryList.CategoryStaggeredListScreen
-import com.example.storeroom.ui.createcategory.CreateCategoryScreen
 import com.example.storeroom.ui.favorite.FavoriteScreen
 import com.example.storeroom.ui.linkdetail.LinkDetailScreen
 import com.example.storeroom.ui.profile.ProfileScreen
@@ -44,18 +42,11 @@ fun ApplicationNavGraph() {
         composable(Screen.Profile.route) {
             ProfileScreen(navHostController = navController)
         }
-        composable(Screen.Link.ROUTE_TEMPLATE) { backStackEntry ->
-            val categoryName = backStackEntry.arguments?.getString(Screen.Link.ARG_CATEGORY_NAME)
-            AddLinkScreen(navHostController = navController, categoryName = categoryName)
-        }
         composable(Screen.Favorite.route) {
             FavoriteScreen(navHostController = navController)
         }
         composable(Screen.LinkDetail.route) {
             LinkDetailScreen(navHostController = navController)
-        }
-        composable(Screen.CreateCategory.route) {
-            CreateCategoryScreen(navHostController = navController)
         }
     }
 }
