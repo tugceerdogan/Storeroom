@@ -12,12 +12,12 @@ def clientId = properties.getProperty('clientId')
 
 android {
     namespace 'com.example.storeroom'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.example.storeroom"
         minSdk 24
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
@@ -106,4 +106,10 @@ dependencies {
 
     //sharepref
     implementation "androidx.preference:preference-ktx:1.2.1"
+
+    // link previews
+    implementation 'org.jsoup:jsoup:1.15.1' // For parsing HTML
+
+    //coil-compose
+    implementation "io.coil-kt:coil-compose:2.5.0"
 }
