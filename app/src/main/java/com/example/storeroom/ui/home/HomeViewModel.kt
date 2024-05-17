@@ -22,7 +22,7 @@ class HomeViewModel @Inject constructor(
 
     fun fetchCategoriesForUser() {
         viewModelScope.launch {
-            val userLinkInfo = getLinkUseCase()
+            val userLinkInfo = getLinkUseCase.getAllLinksFromAllUsers()
             val categoryList = userLinkInfo.map { it.category }
             categories.value = categoryList
         }

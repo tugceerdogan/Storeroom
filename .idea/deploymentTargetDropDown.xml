@@ -24,6 +24,9 @@
       <entry key="LoginTabScreenPreview">
         <State />
       </entry>
+      <entry key="PreviewPreviewLinkCard">
+        <State />
+      </entry>
       <entry key="RegisterTabScreenPreview">
         <State />
       </entry>
@@ -40,7 +43,7 @@
               </deviceKey>
             </Target>
           </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-03-25T06:45:49.546280Z" />
+          <timeTargetWasSelectedWithDropDown value="2024-04-19T06:48:40.747573Z" />
         </State>
       </entry>
     </value>

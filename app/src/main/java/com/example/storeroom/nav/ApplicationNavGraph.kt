@@ -46,7 +46,7 @@ fun ApplicationNavGraph() {
             FavoriteScreen(navHostController = navController)
         }
         composable(Screen.LinkDetail.route) {
-            LinkDetailScreen(navHostController = navController)
+            LinkDetailScreen()
         }
     }
 }

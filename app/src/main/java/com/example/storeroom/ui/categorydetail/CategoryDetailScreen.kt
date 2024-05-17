@@ -1,9 +1,11 @@
 package com.example.storeroom.ui.categorydetail
 
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -12,7 +14,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
@@ -20,9 +21,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
+import com.example.storeroom.data.link.UserLinkInfo
+import com.example.storeroom.ui.SharedViewModel
 import com.example.storeroom.ui.search.SearchBar
 import com.example.storeroom.util.Screen
 import com.example.storeroom.util.StoreroomColor
@@ -32,7 +36,8 @@ import com.example.storeroom.util.StoreroomFont
 fun CategoryDetailScreen(
     navHostController: NavHostController,
     viewModel: CategoryDetailViewModel = hiltViewModel(),
-    categoryName: String?
+    sharedViewModel: SharedViewModel = hiltViewModel((LocalContext.current as ComponentActivity)),
+    categoryName: String?,
 ) {
     val linkItem = viewModel.linkItem.collectAsStateWithLifecycle()
     val itemsInCategory = linkItem.value.filter { it?.category == categoryName }
@@ -66,36 +71,27 @@ fun CategoryDetailScreen(
             modifier = Modifier.padding(start = 16.dp),
         )
         Spacer(modifier = Modifier.height(10.dp))
-        Text(
-            text = "Links",
-            style = MaterialTheme.typography.body2.copy(
-                color = Color.Black,
-                fontSize = 25.sp,
-                fontFamily = StoreroomFont.customBoldFont
-            ),
-            textAlign = TextAlign.Start,
-            modifier = Modifier.padding(start = 16.dp)
-        )
-        AllLinksList(urls = itemsInCategory.map { it?.url }, navHostController = navHostController)
+        AllLinksList(links = itemsInCategory.map { it }, navHostController = navHostController, sharedViewModel = sharedViewModel)
     }
 }
 
 @Composable
-fun AllLinksList(urls: List<String?>, navHostController: NavHostController) {
+fun AllLinksList(links: List<UserLinkInfo?>, navHostController: NavHostController, sharedViewModel: SharedViewModel) {
     LazyColumn {
-        items(urls) {
-            LinkItem(item = it, navHostController = navHostController)
+        items(links) {
+            LinkItem(item = it , navHostController = navHostController, sharedViewModel = sharedViewModel)
         }
     }
 }
 
 @Composable
-fun LinkItem(item: String?, navHostController: NavHostController) {
+fun LinkItem(item: UserLinkInfo?, navHostController: NavHostController, sharedViewModel: SharedViewModel) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .clickable {
+                sharedViewModel.selectLinkItem(item)
                 navHostController.navigate(Screen.LinkDetail.route)
             },
         elevation = 4.dp,
@@ -109,7 +105,7 @@ fun LinkItem(item: String?, navHostController: NavHostController) {
         ) {
 
             Text(
-                text = item ?: "",
+                text = item?.url ?: "",
                 textAlign = TextAlign.Start,
                 modifier = Modifier
                     .weight(1f)

@@ -10,6 +10,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 @HiltViewModel
@@ -32,13 +33,14 @@ class AddLinkScreenViewModel @Inject constructor(
 
     fun addLinkToUser() {
         viewModelScope.launch {
-            addLinkUseCase(_userLinkInfo.value)
-                .addOnSuccessListener {
-                    _addLinkResult.value = Result.success(Unit)
-                }
-                .addOnFailureListener { exception ->
-                    _addLinkResult.value = Result.failure(exception)
-                }
+            try {
+                val documentReference = addLinkUseCase(_userLinkInfo.value).await()
+                val linkId = documentReference.id
+                _userLinkInfo.value = _userLinkInfo.value.copy(linkId = linkId)
+                _addLinkResult.value = Result.success(Unit)
+            } catch (exception: Exception) {
+                _addLinkResult.value = Result.failure(exception)
+            }
         }
     }
 
@@ -61,7 +63,7 @@ class AddLinkScreenViewModel @Inject constructor(
 
     private fun fetchCategories() {
         viewModelScope.launch {
-            val categoryList = getLinkUseCase().map {
+            val categoryList = getLinkUseCase.getAllLinksFromAllUsers().map {
                 it.category
             }
             categories.value = categoryList
